@@ -31,7 +31,7 @@ In order to follow along with the hands on portion of the workshop students shou
   * A Google Cloud Platform Account and Project
   * A basic understanding of Docker: https://docs.docker.com/get-started/
   * A basic understanding of Kubernetes: https://kubernetes.io/docs/tutorials/kubernetes-basics/
-  * 
+  * A sub-domain to use for the workshop and the ability to add an A record to the DNS configuration for that domain
    
 Detailed setup instructions are available at [**Getting Started**](labs/getting-started.md)
 
