@@ -32,6 +32,7 @@ In order to follow along with the hands on portion of the workshop students shou
   * A basic understanding of Docker: https://docs.docker.com/get-started/
   * A basic understanding of Kubernetes: https://kubernetes.io/docs/tutorials/kubernetes-basics/
   * A sub-domain to use for the workshop and the ability to add an A record to the DNS configuration for that domain
+    >NOTE: If you don't have access to a domain that you can modify the DNS records then you can use [nip.io](https://nip.io).
    
 Detailed setup instructions are available at [**Getting Started**](labs/getting-started.md)
 
@@ -41,10 +42,11 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 
 * Lab 1: [Getting Started](labs/getting-started/getting-started.md)
 * Lab 2: [Installing CloudBees Core](labs/installing-core/installing-core.md)
-* Lab 3: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
-* Lab 4: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
-* Lab 5: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
-* Lab 6: [Pod Security Policies](labs/pod-security-policies/psp.md)
+* Lab 3: [Securing CloudBees Core with HTTPS and TLS](labs/tls/tls.md)
+* Lab 4: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
+* Lab 5: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
+* Lab 6: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
+* Lab 7: [Pod Security Policies](labs/pod-security-policies/psp.md)
 
 
 # Disclaimer

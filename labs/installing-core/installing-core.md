@@ -39,17 +39,32 @@ Once you are ready to install CloudBees Core into your own production environmen
     kubectl apply -f nginx-ingress-cloud-generic.yaml
     kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
    ```
-7. Launch the Cloud Shell code editor by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
-8. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
-9.  Add the following yaml to the ***cb-core-namespace.yml** file:
-   ```yaml
-   apiVersion: v1
-   kind: Namespace
-   metadata:
-     name: cb-core
-     labels:
-       app.kubernetes.io/name: cb-core
+7. You will now need to add an A record to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
    ```
+    kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+   ```
+   Say `104.196.106.80` was the external IP returned and the sub-domain I am using is `k8s.cb-sa.io` (managed via Cloud DNS) and I want the CloudBees Core's URL to be `kmadel.k8s.cb-sa.io` - I can use the glcoud CLI to add an A record that maps the Core sub-domain to the external IP of the ingress-nginx load balancer:
+   ```
+   gcloud dns record-sets transaction start --zone="k8s-workshop-zone" --project k8s-core-workshop
+   gcloud dns record-sets transaction add 104.196.106.80 --name="kmadel.k8s.cb-sa.io" \
+     --ttl="30" \
+     --type="A" \
+     --zone="k8s-workshop-zone" \
+     --project k8s-core-workshop
+   gcloud dns record-sets transaction execute --zone="k8s-workshop-zone" --project k8s-core-workshop
+   ```
+   >NOTE: 
+8. Launch the Cloud Shell code editor by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
+9. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
+10. Add the following yaml to the ***cb-core-namespace.yml** file:
+       ```yaml
+       apiVersion: v1
+       kind: Namespace
+       metadata:
+         name: cb-core
+         labels:
+           app.kubernetes.io/name: cb-core
+       ```
 11. Use `kubectl` to apply the ***cb-core-namespace.yml** file:
     ```
     kubectl apply -f cb-core-namespace.yml
@@ -133,18 +148,20 @@ Once you are ready to install CloudBees Core into your own production environmen
     - set-storageclass.yml
     - set-ingress-host.yml
     ```
-22.  Use `kubectl` to apply everything ([as of version 1.14 Kustomize is integrated `kubectl`](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)) - the `-k` flag allows specifying a Kustomize directory - and then check on the rollout status of the `cjoc` `StatefulSet`:
+22. Use `kubectl` to apply everything ([as of version 1.14 Kustomize is integrated `kubectl`](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)) - the `-k` flag allows specifying a Kustomize directory - and then check on the rollout status of the `cjoc` `StatefulSet`:
     ```yaml
     kubectl apply -k ./kustomize
     kubectl -n cb-core rollout status sts cjoc
     ```
-23.  Once the `jenkins` container of the `cjoc-o` Pod is running you can retrieve the temporary Jenkins admin password with the following command:
+23. Once the `jenkins` container of the `cjoc-o` Pod is running you can retrieve the temporary Jenkins admin password with the following command:
     ```
     kubectl -n cb-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword
     ```
     >NOTE: You do not need to specify the Pod `container` using the `-c` flag because the `cjoc-0` Pod only has one container.
 24.  Copy the `initialAdminPassword` value goto your sub-domain and log in with the password.
 
+### Using nip.io
+If you don't have access to a domain to modify the DNS records then 
 
 ## Lab Summary
 We installed CloudBees Core on GKE.
