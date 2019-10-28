@@ -43,10 +43,12 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 * Lab 1: [Getting Started](labs/getting-started/getting-started.md)
 * Lab 2: [Installing CloudBees Core](labs/installing-core/installing-core.md)
 * Lab 3: [Securing CloudBees Core with HTTPS and TLS](labs/tls/tls.md)
-* Lab 4: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
-* Lab 5: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
-* Lab 6: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
-* Lab 7: [Pod Security Policies](labs/pod-security-policies/psp.md)
+* Lab 4: [Pod Security Policies](labs/pod-security-policies/psp.md)
+* Lab 5: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
+* Lab 6: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
+* Lab 7: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
+* Lab 8: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
+
 
 
 # Disclaimer

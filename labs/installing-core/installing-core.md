@@ -1,6 +1,6 @@
 # Installing CloudBees Core on Kubernetes (GKE)
 
-CloudBees Core on modern cloud platforms can be installed on any certified Kubernetes platform but is only verified for the platforms listed [here](https://docs.cloudbees.com/docs/cloudbees-core/latest/). For this workshop we will be installing CloudBees Core on GKE.  
+CloudBees Core on modern cloud platforms can be installed on any certified Kubernetes platform but is only verified for the platforms listed [here](https://docs.cloudbees.com/docs/cloudbees-core/latest/). For this workshop we will be installing CloudBees Core on GKE but will highlight when there are similar capabilities or lack of certain features for AWS EKS and Azure AKS. 
 
 ## Overview
 
@@ -12,7 +12,12 @@ CloudBees Core on modern cloud platforms can be installed on any certified Kuber
 
 ## Kubernetes Installation Options for CloudBees Core
 
-Helm - specifically Helm 2 - or raw yaml applied with `kubectl` or raw yaml with Kustomize.
+There are several options for how you install CloudBees Core on Kubernetes: 
+
+- Helm - specifically Helm 2 - with Tiller
+- Helm without Tiller
+- raw yaml applied with `kubectl`
+- raw yaml with Kustomize
 
 Helm 2 has some drawbacks in regards to security and stability. To achieve the most flexibility.
 
@@ -39,7 +44,7 @@ Once you are ready to install CloudBees Core into your own production environmen
     kubectl apply -f nginx-ingress-cloud-generic.yaml
     kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
    ```
-7. You will now need to add an A record to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
+5. You will now need to add an A record to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
    ```
     kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
    ```
@@ -54,9 +59,9 @@ Once you are ready to install CloudBees Core into your own production environmen
    gcloud dns record-sets transaction execute --zone="k8s-workshop-zone" --project k8s-core-workshop
    ```
    >NOTE: 
-8. Launch the Cloud Shell code editor by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
-9. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
-10. Add the following yaml to the ***cb-core-namespace.yml** file:
+6. Launch the Cloud Shell code editor by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
+7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
+8.  Add the following yaml to the ***cb-core-namespace.yml** file:
        ```yaml
        apiVersion: v1
        kind: Namespace
@@ -65,15 +70,15 @@ Once you are ready to install CloudBees Core into your own production environmen
          labels:
            app.kubernetes.io/name: cb-core
        ```
-11. Use `kubectl` to apply the ***cb-core-namespace.yml** file:
+9.  Use `kubectl` to apply the ***cb-core-namespace.yml** file:
     ```
     kubectl apply -f cb-core-namespace.yml
     ```
-12. Run the following `kubectl` command to see the available StorageClasses for your cluster (note that `sc` is shorthand for `storageclass`):
+10. Run the following `kubectl` command to see the available StorageClasses for your cluster (note that `sc` is shorthand for `storageclass`):
     ```
     kubectl get sc
     ```
-13. Google automatically creates a `standard` Storage In the Cloud Shell code editor create a file named ***ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
+11. Google automatically creates a `standard` Storage In the Cloud Shell code editor create a file named ***ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
     ```yaml
     apiVersion: storage.k8s.io/v1
     kind: StorageClass
@@ -83,8 +88,8 @@ Once you are ready to install CloudBees Core into your own production environmen
     parameters:
       type: pd-ssd
     ```
-14. Use `kubectl` to apply the ***ssd-storageclass.yml*** file
-15. Create a directory named ***kustomize***:
+12. Use `kubectl` to apply the ***ssd-storageclass.yml*** file
+13. Create a directory named ***kustomize***:
    ```
     mkdir kustomize
    ```
@@ -160,8 +165,6 @@ Once you are ready to install CloudBees Core into your own production environmen
     >NOTE: You do not need to specify the Pod `container` using the `-c` flag because the `cjoc-0` Pod only has one container.
 24.  Copy the `initialAdminPassword` value goto your sub-domain and log in with the password.
 
-### Using nip.io
-If you don't have access to a domain to modify the DNS records then 
 
 ## Lab Summary
 We installed CloudBees Core on GKE.
