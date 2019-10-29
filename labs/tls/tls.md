@@ -1,3 +1,4 @@
+![Best Practice: Security](https://img.shields.io/badge/best_practice-security-blue)
 # HTTPS for CloudBees Core
 
 [cert-manager](https://docs.cert-manager.io/en/latest/index.html) and LetsEncrypt for TLS termination at the Kubernetes cluster ingress to allow us to use the HTTPS protocol for CloudBees Core.
