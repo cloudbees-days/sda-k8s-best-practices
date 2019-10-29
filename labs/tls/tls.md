@@ -72,7 +72,7 @@
            ingress:
              class: nginx
    ```
-   There is only one `solvers` and this is used to verify domain ownership.
+   There is only one `solvers` and this is used to verify domain ownership. Let’s Encrypt gives a token to the cert-manager ACME client, then the cert-manager ACME client creates a `Solver` Pod with a file available at http://<YOUR_DOMAIN>/.well-known/acme-challenge/<TOKEN>. That file contains the token, plus a thumbprint of your account key. Once the cert-manager ACME client tells Let’s Encrypt that the file is ready, Let’s Encrypt tries retrieving it and when successful issues a certificate.
 6. Next, create the cert-manager `Issuer` resource using `kubectl apply`:
    ```
    kubectl apply -f ./cert-manager/letsencrypt-staging-issuer.yml
