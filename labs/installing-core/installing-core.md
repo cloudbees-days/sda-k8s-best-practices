@@ -48,7 +48,7 @@ Once you are ready to install CloudBees Core into your own production environmen
    ```
     kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
    ```
-   Say `104.196.106.80` was the external IP returned and the sub-domain I am using is `k8s.cb-sa.io` (managed via Cloud DNS) and I want the CloudBees Core's URL to be `kmadel.k8s.cb-sa.io` - I can use the glcoud CLI to add an A record that maps the Core sub-domain to the external IP of the ingress-nginx load balancer:
+   Say `104.196.106.80` was the external IP returned and the (sub)domain I am using is `k8s.cb-sa.io` (managed via Cloud DNS) and I want the CloudBees Core's URL to be `kmadel.k8s.cb-sa.io` - I can use the glcoud CLI to add an A record that maps the Core sub-domain to the external IP of the ingress-nginx load balancer:
    ```
    gcloud dns record-sets transaction start --zone="k8s-workshop-zone" --project k8s-core-workshop
    gcloud dns record-sets transaction add 104.196.106.80 --name="kmadel.k8s.cb-sa.io" \
@@ -78,16 +78,18 @@ Once you are ready to install CloudBees Core into your own production environmen
     ```
     kubectl get sc
     ```
-11. Google automatically creates a `standard` Storage In the Cloud Shell code editor create a file named ***ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
+11. Google automatically creates a `standard` Storage class, but it is for slower magnetic storage and we want faster SSD storage for CloudBees Core Persistent Volumes. In the Cloud Shell code editor create a file named ***ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
     ```yaml
     apiVersion: storage.k8s.io/v1
     kind: StorageClass
     metadata:
       name: ssd
     provisioner: kubernetes.io/gce-pd
+    allowVolumeExpansion: true
     parameters:
       type: pd-ssd
     ```
+    The important things to note is the `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
 12. Use `kubectl` to apply the ***ssd-storageclass.yml*** file
 13. Create a directory named ***kustomize***:
    ```
