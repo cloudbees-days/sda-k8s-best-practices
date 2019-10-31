@@ -70,7 +70,7 @@ This workshop is intended to provide you with an understanding of everything und
 
    ### nip.io
 
-   If don't have a domain that you can add an A record to, then you can use nip.io - so our Core domain for the above IP would be: `104-196-106-80.nip.io`
+   If don't have a domain that you can add an A record to, then you can use nip.io - no DNS configuration required - so our Core sub-domain for the above IP would be: `104-196-106-80.nip.io`
 
 6. Launch the [Cloud Shell code editor](https://cloud.google.com/shell/docs/viewing-and-editing-files) by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
 7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
@@ -102,8 +102,11 @@ This workshop is intended to provide you with an understanding of everything und
     parameters:
       type: pd-ssd
     ```
-    The important things to note is the `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
+    >NOTE: the `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
 12. Use `kubectl` to apply the ***ssd-storageclass.yml*** file
+    ```
+    kubectl apply -f ssd-storageclass.yml
+    ```
 13. Create a directory named ***kustomize***:
    ```
     mkdir kustomize
@@ -128,7 +131,7 @@ This workshop is intended to provide you with an understanding of everything und
     data:
       location.groovy: |
         hudson.ExtensionList.lookupSingleton(com.cloudbees.jenkins.support.impl.cloudbees.TcpSlaveAgentListenerMonitor.class).disable(true)
-        jenkins.model.JenkinsLocationConfiguration.get().setUrl("http://k8sworkshop.cb-sa.io/cjoc")
+        jenkins.model.JenkinsLocationConfiguration.get().setUrl("http://kmadel.cb-sa.io/cjoc")
     ```
 18. Create a Kustomize patch file - named ***set-storageclass.yml*** in the ***kustomize*** directory - to set the StorageClass to be used for the `cjoc` StatefulSet and override the `storage` size from `20Gi` to `30Gi`:
     ```yaml
@@ -156,7 +159,7 @@ This workshop is intended to provide you with an understanding of everything und
       name: cjoc
     spec:
       rules:
-      - host: "k8sworkshop.cb-sa.io"
+      - host: "kmadel.cb-sa.io"
     ```
 20. Create a Kustomize file named ***kustomization.yml*** in the ***kustomize*** directory to apply the `cb-core` Namespace to all the Kubernetes Resources defined in the ***cloudbees-core.yml*** file, patch the `cjoc` `StatefulSet` to set the `StorageClass` and patch the `cjoc` `Ingress` resource with our sub-domain
 21. Add the following yaml to the ***kustomization.yml** file:
