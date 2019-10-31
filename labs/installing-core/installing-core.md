@@ -44,11 +44,20 @@ This workshop is intended to provide you with an understanding of everything und
     kubectl apply -f nginx-ingress-cloud-generic.yaml
     kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
    ```
-5. You will now need to add an A record to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
+5. You will now need to add an [A record](https://kb.pressable.com/article/dns-record-types-explained/) to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
    ```
     kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
    ```
-   Say `104.196.106.80` was the external IP returned and the (sub)domain I am using is `k8s.cb-sa.io` (managed via Cloud DNS) and I want the CloudBees Core's URL to be `kmadel.k8s.cb-sa.io` - I can use the glcoud CLI to add an A record that maps the Core sub-domain to the external IP of the ingress-nginx load balancer:
+   Say `104.196.106.80` was the external IP returned and the domain I am using is `cb-sa.io` and I want the CloudBees Core's URL to be `kmadel.cb-sa.io`. I need to add an A record to the DNS configuration for the `cb-sa.io` domain. 
+
+   ### Google Domains
+
+   Go to the screen to manage the DNS for your Google Domain and add a new A record that points to the load balancer external IP for our Nginx Ingress:
+   <p><img src="images/dns_a_record_google_domains.png" width=800/>
+
+   ### Cloud DNS
+   
+   Use the glcoud CLI to add an A record that maps the Core sub-domain to the external IP of the ingress-nginx load balancer:
    ```
    gcloud dns record-sets transaction start --zone="k8s-workshop-zone" --project k8s-core-workshop
    gcloud dns record-sets transaction add 104.196.106.80 --name="kmadel.k8s.cb-sa.io" \
@@ -58,7 +67,11 @@ This workshop is intended to provide you with an understanding of everything und
      --project k8s-core-workshop
    gcloud dns record-sets transaction execute --zone="k8s-workshop-zone" --project k8s-core-workshop
    ```
-   >NOTE: 
+
+   ### nip.io
+
+   If don't have a domain that you can add an A record to, then you can use nip.io - so our Core domain for the above IP would be: `104-196-106-80.nip.io`
+
 6. Launch the [Cloud Shell code editor](https://cloud.google.com/shell/docs/viewing-and-editing-files) by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
 7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
 8.  Add the following yaml to the ***cb-core-namespace.yml** file:
