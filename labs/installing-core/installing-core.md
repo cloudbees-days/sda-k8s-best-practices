@@ -59,7 +59,7 @@ Once you are ready to install CloudBees Core into your own production environmen
    gcloud dns record-sets transaction execute --zone="k8s-workshop-zone" --project k8s-core-workshop
    ```
    >NOTE: 
-6. Launch the Cloud Shell code editor by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
+6. Launch the [Cloud Shell code editor](https://cloud.google.com/shell/docs/viewing-and-editing-files) by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
 7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
 8.  Add the following yaml to the ***cb-core-namespace.yml** file:
        ```yaml

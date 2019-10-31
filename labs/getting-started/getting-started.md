@@ -25,7 +25,7 @@ Creating a new GitHub Organization will allow you to easily identify the reposit
 ## Create a GCP Project
 
 ### Why Google Cloud?
-For the purposes of this workshop, the Google Cloud Platform provides the best tools and functionality for managed Kubernetes.
+For the purposes of this workshop, the Google Cloud Platform provides the best tools and functionality with ease of use for managed Kubernetes. Where applicable, key differences between GKE, EKS and AKS will be noted and explained.
 
 ## Create a GKE Cluster
 
