@@ -1,0 +1,10 @@
+namespace: cb-core
+images:
+- name: cloudbees/cloudbees-cloud-core-oc
+  newTag: 2.190.2.2
+resources:
+- cloudbees-core.yml
+- managed-master-hibernation-monitor.yml
+patchesStrategicMerge:
+- set-ingress-host.yml
+- set-storageclass.yml
