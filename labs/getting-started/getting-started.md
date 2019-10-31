@@ -35,13 +35,13 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
    1. Update **Name** to ***cb-core-workshop-cluster***
    2. Leave **Location type** set to ***Zonal***
    3. Select a **Zone** that is geographically closest, for example ***us-east1-b*** for Richmond, VA
-   4. Under **Master version** click the version drop-down and select ***1.14.6-gke.2***  <p><img src="images/gke_create_master_versions.png" width=500/>
+   4. Under **Master version** click the version drop-down and select ***1.14.7-gke14***  <p><img src="images/gke_create_master_versions.png" width=500/>
    5. Under **Node pools** click on the **More options** button <p><img src="images/gke_create_more_options.png" width=800/>
    6. On the **Edit node pool** screen:
       1. Change the **Name** to ***cb-core-node-pool***
       2. Under **Size** set the number of nodes to 1, then check the **Enable autoscaling** checkbox and then set **Minimum number of nodes** to 0 and **Maximum number of Nodes** to 3
-      3. Under **Nodes** select ***Container-Optimized OS with Containerd (cos_containerd) (beta)*** for the **Image type**
-      4. Under **Machine configuration** select ***n1-standard-2 (2 vCPU, 7.5 GB memory)*** as the **Machine type**
+      3. Under **Nodes** select ***Container-Optimized OS with Containerd (cos_containerd)*** for the **Image type**
+      4. Under **Machine configuration** select ***n1-standard-4 (4 vCPU, 15 GB memory)*** as the **Machine type**
       5. Select ***SSD persistent disk** as the **Boot disk type**
       6. Under **Shielded options** check the ***Secure boot*** checkbox
       7. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
@@ -106,6 +106,6 @@ A Cloud Shell workspace will provide all of the tools that we will need for the 
    ```
 
 ## Lab Summary
-In this lab we created a GKE cluster. In the next lab we will install CloudBees Core on this cluster.
+In this lab we created a GKE cluster. In the [next lab](../installing-core/installing-core.md) we will install CloudBees Core on this cluster.
 
 
