@@ -19,11 +19,11 @@ There are several options for how you install CloudBees Core on Kubernetes:
 - raw yaml applied with `kubectl`
 - raw yaml with Kustomize
 
-Helm 2 has some drawbacks in regards to security and stability. To achieve the most flexibility.
+Helm 2 has some drawbacks in regards to security and stability. A component of Helm 2, called Tiller, is intstalled with cluster wide permissions that are a security concern.
 
-This workshop is intended to provide you with an understanding of everything under the hood (or at least as much as possible), and Helm hides a lot of details - as does using `sed` commands to update the CloudBees Core yaml files. But at the same time, we want to make it easy to manage the Kubernetes yaml configuration for CloudBees Core as code - to include more straightforward upgrades. So we will use Kustomize.
+This workshop is intended to provide you with an understanding of everything under the hood (or at least as much as possible), and Helm hides a lot of details - as does using `sed` commands to update the CloudBees Core yaml files. However, we still want to make it easy to manage the Kubernetes yaml configuration for CloudBees Core as code - to include more straightforward upgrades. So we will use [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/) along with traditional Kubernetes yaml manifests to manage the install configuration for CloudBees Core.
 
-Once you are ready to install CloudBees Core into your own production environment you should revisit what installation approach is the best one for your organization.
+>NOTE: When installing CloudBees Core into your own production environment you should revisit what installation approach is the best one for your organization.
 
 ## Install CloudBees Core
 
