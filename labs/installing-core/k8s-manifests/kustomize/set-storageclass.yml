@@ -1,0 +1,15 @@
+apiVersion: "apps/v1"
+kind: "StatefulSet"
+metadata:
+    name: cjoc
+spec:
+    volumeClaimTemplates:
+    - metadata:
+        name: jenkins-home
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        storageClassName: ssd
+        resources:
+          requests:
+              storage: "30Gi"
