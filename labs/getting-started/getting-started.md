@@ -29,7 +29,7 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
 
 ## Create a GKE Cluster
 
-1. In the GCP console navigate to **Compute > Kubernetes Engine** and click on ***Clusters*** <p><img src="images/gke_clusters.png" width=800/>
+1. In the GCP console - within the GPC project you created for this workshop - navigate to **Compute > Kubernetes Engine** and click on ***Clusters*** <p><img src="images/gke_clusters.png" width=800/>
 2. On the **Kubernetes Engine > Clusters** screen click on the ***Create cluster*** button <p><img src="images/gke_create_cluster.png" width=800/>
 3. On the **Create a Kubernetes cluster** screen:
    1. Update **Name** to ***cb-core-workshop-cluster***
