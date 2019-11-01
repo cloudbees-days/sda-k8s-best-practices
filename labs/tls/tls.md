@@ -18,8 +18,9 @@
    ```
 2. Next use `kubectl` to apply that file:
    ```
-   kubectl apply -f ./cert-manager/cert-manager-namespace.yml
+   kubectl apply --validate=false -f ./cert-manager/cert-manager-namespace.yml
    ```
+   >NOTE: `--validate=false` is used because the latest version of **cert-manager** leverages some Kubernetes v1.15 annotations and CRD features, but will still run fine on v1.14.
 3. Now download the [cert-manager single yaml manifest file](https://docs.cert-manager.io/en/latest/getting-started/install/kubernetes.html#installing-with-regular-manifests) containing the Kubernetes resources for cert-manager and apply:
    ```
    wget https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml
