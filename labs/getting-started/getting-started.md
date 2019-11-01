@@ -47,10 +47,11 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
       7. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
       8. Click on the **Save** button at the bottom of the screen
    7. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
-   8. Under **Security** check the **Enable Workload Identity (beta)** checkbox
-   9. Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
-   10. Under **Additional features** check the **Enable GKE usage monitoring** checkbox and enter ***cb_core_usage_metering_dataset*** for the name of the **BigQuery dataset**
-   11. Review your configuration and then click the **Create** button at the bottom of the screen <p><img src="images/gke_create_usage_metering.png" width=800/>
+   8. Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
+   9. Under **Security** check the **Enable Workload Identity (beta)** checkbox
+   10. Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
+   11. Under **Additional features** check the **Enable GKE usage monitoring** checkbox and enter ***cb_core_usage_metering_dataset*** for the name of the **BigQuery dataset**
+   12. Review your configuration and then click the **Create** button at the bottom of the screen <p><img src="images/gke_create_usage_metering.png" width=800/>
 4.  The cluster won't be created because we don't have a BigQuery dataset so we will create a ***cb_core_usage_metering_dataset*** BigQuery dataset
     1.  From the top left menu, navigate to and select **BIG DATA > BigQuery** <p><img src="images/gke_create_big_query.png" width=500/>
     2.  On the **BigQuery** screen click on **CREATE DATASET** <p><img src="images/gke_create_dataset.png" width=800/>

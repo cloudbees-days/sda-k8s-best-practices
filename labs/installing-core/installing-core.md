@@ -46,7 +46,7 @@ This workshop is intended to provide you with an understanding of everything und
    ```
 5. You will now need to add an [A record](https://kb.pressable.com/article/dns-record-types-explained/) to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
    ```
-    kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+    kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}' --watch
    ```
    Say `104.196.106.80` was the external IP returned and the domain I am using is `cb-sa.io` and I want the CloudBees Core's URL to be `kmadel.cb-sa.io`. I need to add an A record to the DNS configuration for the `cb-sa.io` domain. 
 
@@ -162,7 +162,7 @@ This workshop is intended to provide you with an understanding of everything und
       - host: "kmadel.cb-sa.io"
     ```
 20. Create a Kustomize file named ***kustomization.yml*** in the ***kustomize*** directory to apply the `cb-core` Namespace to all the Kubernetes Resources defined in the ***cloudbees-core.yml*** file, patch the `cjoc` `StatefulSet` to set the `StorageClass` and patch the `cjoc` `Ingress` resource with our sub-domain
-21. Add the following yaml to the ***kustomization.yml** file:
+21. Add the following yaml to the ***kustomization.yml*** file:
     ```yaml
     namespace: cb-core
     resources:
@@ -171,7 +171,7 @@ This workshop is intended to provide you with an understanding of everything und
     - set-storageclass.yml
     - set-ingress-host.yml
     ```
-22. Use `kubectl` to apply everything ([as of version 1.14 Kustomize is integrated `kubectl`](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)) - the `-k` flag allows specifying a Kustomize directory - and then check on the rollout status of the `cjoc` `StatefulSet`:
+22. Use `kubectl` to apply everything ([as of version 1.14 Kustomize is integrated with `kubectl`](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)) - the `-k` flag allows specifying a Kustomize directory - and then check on the rollout status of the `cjoc` `StatefulSet`:
     ```yaml
     kubectl apply -k ./kustomize
     kubectl -n cb-core rollout status sts cjoc
@@ -181,9 +181,12 @@ This workshop is intended to provide you with an understanding of everything und
     kubectl -n cb-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword
     ```
     >NOTE: You do not need to specify the Pod `container` using the `-c` flag because the `cjoc-0` Pod only has one container.
-24.  Copy the `initialAdminPassword` value goto your sub-domain and log in with the password.
+24.  Copy the `initialAdminPassword` value, goto the sub-domain configured above, enter the temporary **Administrator password** you retrieved above and press **Continue**.<p><img src="images/unlock_cloudbees_core.png" width=800/>
+25.  On the next screen, click on **Request a trial license** 
+26.  Create first admin user - can be whatever you want, but make sure you remember what password you use - and then click the **Save and Continue** button.
+27.  Finally, on the next screen, click the **Start using CloudBees Core Cloud Operations Center**.
 
 
 ## Lab Summary
-We installed CloudBees Core on GKE.
+We installed CloudBees Core on GKE. In the [next lab](../tls/tls.md) we will make CloudBees Core more secure with HTTPS/TLS.
 
