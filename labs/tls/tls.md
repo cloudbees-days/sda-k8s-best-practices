@@ -1,11 +1,9 @@
 ![Best Practice: Security](https://img.shields.io/badge/best_practice-security-blue)
 # HTTPS for CloudBees Core
 
-[cert-manager](https://docs.cert-manager.io/en/latest/index.html) and LetsEncrypt for TLS termination at the Kubernetes cluster ingress to allow us to use the HTTPS protocol for CloudBees Core.
+[cert-manager](https://docs.cert-manager.io/en/latest/index.html) is a Kubernetes add-on to automate the management and issuance of TLS certificates from various issuing sources. For this workshop we will leverage the LetsEncrypt free and automate Certificate Authority to provide for TLS termination at the Kubernetes cluster ingress and allow us to use the HTTPS protocol for the CloudBees Core URL.
 
 ## Install cert-manager
-
-
 
 1. In the Cloud Shell code editor navigate to the ***oc-casc*** directory, create a new directory named ***cert-manager*** and in that directory create a new file named ***cert-manager-namespace.yml** with the following contents:
    ```yaml
@@ -115,9 +113,9 @@
    ```
    kubectl apply -k ./kustomize
    ```
-9.  Verify that the certificate was created:
+9.  Verify that the certificate was created and is ready:
     ```
-    kubectl -n cb-core get certificate
+    kubectl -n cb-core get certificate --watch
     ```
 10. Now that we successfully created a TLS certificate with the Let's Encrypt staging service we will create a Let's Encrypt production `Issuer`. Make a copy of the ***letsencrypt-staging-issuer.yml*** in the ***cert-manager*** directory name ***letsencrypt-production-issuer.yml*** in the ***cert-manager*** directory and update the `metadata` `name`, `spec` `acme` `server` and `spec` `acme` `privateKeySecretRef` `name` so it matches the following:
     ```yaml
@@ -142,13 +140,24 @@
             ingress:
               class: nginx
     ```
-11. Apply the changes with `kubectl`:
+11. Apply the changes with `kubectl` :
     ```
     kubectl apply -f ./cert-manager/letsencrypt-production-issuer.yml
+    ```
+    And then verify that the account was registered properly using `kubectl describe`:
+    ```
+    kubectl -n cb-core describe issuer letsencrypt-production
     ```
 12. Next update the cb-core Ingress to use the production Issuer: `cert-manager.io/issuer: "letsencrypt-production"`
 13. Apply the changes with `kubectl`:
     ```
     kubectl apply -k ./kustomize
     ```
-14. Next
+14. Verify that the certificate was created and is ready:
+    ```
+    kubectl -n cb-core get certificate --watch
+    ```
+15. Next, open CloudBees Core Operations Center at `https:\\{your.sub.domain}\cjoc\`. 
+
+## Lab Summary
+In this lab we configured Core to use HTTPS/TLS with cert-manager and Let's Encrypt. In the [next lab](../pod-security-policies/psp.md) we will enable [Pod Security Polices (PSP) for our Kubernetes](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) cluster and look at how PSPs provide fine-grained control of security sensitive aspect for Pod creation and updates.

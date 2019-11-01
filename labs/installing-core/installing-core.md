@@ -176,7 +176,7 @@ This workshop is intended to provide you with an understanding of everything und
     kubectl apply -k ./kustomize
     kubectl -n cb-core rollout status sts cjoc
     ```
-23. Once the `jenkins` container of the `cjoc-o` Pod is running you can retrieve the temporary Jenkins admin password with the following command:
+23. Once the `jenkins` container of the `cjoc-o` Pod is running (and the Jenkins WAR has been unarchived to the Jenkins home directory - ~60 seconds) you can retrieve the temporary Jenkins admin password with the following command:
     ```
     kubectl -n cb-core exec cjoc-0 -- cat /var/jenkins_home/secrets/initialAdminPassword
     ```

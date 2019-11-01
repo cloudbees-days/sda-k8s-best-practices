@@ -8,3 +8,13 @@
 
 ## Enable PodSecurityPolicies
 
+1. We will use the `glcoud` CLI to enable PSPs for the Core GKE cluster:
+2. Now we will restart the `cjoc-0` `Pod` to show that it will no longer start due to not having a PSP.
+3. Create a restrictive PSP cluster resource in a new ***psp*** directory:
+   ```
+   mkdir psp
+   ```
+   
+4. Apply the PSP to the `cjoc-master-management` `Role` resources by applying it to the `cjoc` `ServiceAccount` via a `ClusterRoleBinding`:
+5. The `cjoc-0` `Pod` will now start:
+6. Now we need to apply 
