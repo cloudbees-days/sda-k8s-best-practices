@@ -35,13 +35,13 @@ This workshop is intended to provide you with an understanding of everything und
    ```
 3. Download the [Kubernetes NGINX Ingress Controller for GKE](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke):
    ```
-    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml -o nginx-ingress-manadatory.yaml
-    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml -o nginx-ingress-cloud-generic.yaml
+    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml -o ./nginx-ingress/nginx-ingress-manadatory.yaml
+    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml -o ./nginx-ingress/nginx-ingress-cloud-generic.yaml
    ```
 4. Use `kubectl` to install the NGINX Ingress Controller and verify that it is running:
    ```
-    kubectl apply -f nginx-ingress-manadatory.yaml
-    kubectl apply -f nginx-ingress-cloud-generic.yaml
+    kubectl apply -f ./nginx-ingress/nginx-ingress-manadatory.yaml
+    kubectl apply -f ./nginx-ingress/nginx-ingress-cloud-generic.yaml
     kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
    ```
 5. You will now need to add an [A record](https://kb.pressable.com/article/dns-record-types-explained/) to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
