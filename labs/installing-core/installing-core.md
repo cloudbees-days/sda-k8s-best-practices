@@ -108,7 +108,7 @@ This workshop is intended to provide you with an understanding of everything und
       replication-type: regional-pd
       zones: us-central1-c, us-central1-f
     ```
-    >NOTE: the `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
+    The `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
 
     ![High Availability: Security](https://img.shields.io/badge/high_availability-security-blue) We also set the `replication-type` to `regional-pd` and then specified the two zones we used when creating the cluster for the value of `zones` **us-central1-c** and **us-central1-f**. Regional persistent disks replicate persistent disks between two zones and will allow CloudBees Core Operations Center to automatically failover to another zone with limited down-time (typically only a few minutes). 
 12. Use `kubectl` to apply the ***regional-ssd-storageclass.yml*** file
