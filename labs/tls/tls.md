@@ -172,9 +172,10 @@
     ```
 14. Verify that the certificate was created and is ready:
     ```
-    kubectl -n cb-core get certificate --watch
+    kubectl -n cb-core describe certificate cb-core-tls
     ```
-15. Next, open CloudBees Core Operations Center at `https:\\{your.sub.domain}\cjoc\`. 
+    Specifically you will want to see that the `Status` is `True` and the `Type` is `Ready`.
+15. Next, open CloudBees Core Operations Center at `https://{your.sub.domain}/cjoc/`. 
 
 ## Lab Summary
 In this lab we configured Core to use HTTPS/TLS with cert-manager and Let's Encrypt. In the [next lab](../pod-security-policies/psp.md) we will enable [Pod Security Polices (PSP) for our Kubernetes](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) cluster and look at how PSPs provide fine-grained control of security sensitive aspect for Pod creation and updates.
