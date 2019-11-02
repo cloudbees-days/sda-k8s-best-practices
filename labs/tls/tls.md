@@ -110,6 +110,7 @@
              servicePort: 80
    ```
    You added the `cert-manager.io/issuer: "letsencrypt-staging"` annotation, updated the `nginx.ingress.kubernetes.io/app-root` value to use `https` and added the `tls` configuration.
+   
    You will also need to modify the `location.groovy` `data` in the `cjoc-configure-jenkins-groovy` `ConfigMap` in the ***cloudbees-core.yml*** file in the ***kustomize*** directory so the Jenkins URL for Operations Center uses `https`:
    ```yaml
    apiVersion: v1
