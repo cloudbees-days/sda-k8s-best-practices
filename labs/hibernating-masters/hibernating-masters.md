@@ -1,6 +1,6 @@
 # Hibernating Managed Masters
 
-CloudBees provides a service that allows you to configure Managed Masters to **hibernate** after a specified amount of time if there are no active or scheduled builds.
+CloudBees Core has a feature that allows you to configure Managed Masters to **hibernate** after a specified amount of time if there are no active or scheduled builds.
 
 ## Enabling Hibernation
 

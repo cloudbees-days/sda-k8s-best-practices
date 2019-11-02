@@ -40,15 +40,17 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 
 **The labs covered in this workshop are available at the following links:**
 
-* Lab 1: [Getting Started](labs/getting-started/getting-started.md)
+* Lab 1: [Getting Started - Creating a GKE Cluster](labs/getting-started/getting-started.md)
 * Lab 2: [Installing CloudBees Core](labs/installing-core/installing-core.md)
 * Lab 3: [Securing CloudBees Core with HTTPS and TLS](labs/tls/tls.md)
 * Lab 4: [Pod Security Policies](labs/pod-security-policies/psp.md)
 * Lab 5: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
-* Lab 6: [Hibernating Masters and Affinity](labs/hibernating-masters/hibernating-masters.md)
-* Lab 7: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
-* Lab 8: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
-* Lab 9: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
+* Lab 6: [Securing Masters with Namespaces](labs/master-namespaces/master-namespaces.md)
+* Lab 7: [Configuration as Code for Core]
+* Lab 8: [Hibernating Masters and Affinity](labs/hibernating-masters/hibernating-masters.md)
+* Lab 9: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
+* Lab 10: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
+* Lab 11: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
 
 
 

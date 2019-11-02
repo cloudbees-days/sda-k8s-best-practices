@@ -1,5 +1,4 @@
-![Best Practice: Security](https://img.shields.io/badge/best_practice-security-blue)
-# HTTPS for CloudBees Core
+# HTTPS for CloudBees Core ![Best Practice: Security](https://img.shields.io/badge/best_practice-security-blue)
 
 [cert-manager](https://docs.cert-manager.io/en/latest/index.html) is a Kubernetes add-on to automate the management and issuance of TLS certificates from various issuing sources. For this workshop we will leverage the LetsEncrypt free and automate Certificate Authority to provide for TLS termination at the Kubernetes cluster ingress and allow us to use the HTTPS protocol for the CloudBees Core URL.
 
