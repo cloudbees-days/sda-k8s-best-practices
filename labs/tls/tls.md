@@ -80,6 +80,7 @@
    ```
    kubectl -n cb-core describe issuer letsencrypt-staging
    ```
+   Specifically you will want to see that the `Status` is `True` and the `Type` is `Ready`.
 7. Update the nginx-ingress for CloudBees Core to use TLS and use the staging cert-manager `Issuer` by modifying the ***set-ingress-host.yml*** file in the ***kustomize*** directory so it matches the following:
    ```yaml
    apiVersion: extensions/v1beta1
