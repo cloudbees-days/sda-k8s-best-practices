@@ -12,14 +12,14 @@ CloudBees Core on modern cloud platforms can be installed on any certified Kuber
 
 ## Kubernetes Installation Options for CloudBees Core
 
-There are several options for how you install CloudBees Core on Kubernetes: 
+There are several options for installing CloudBees Core on Kubernetes: 
 
 - Helm - specifically Helm 2 - with Tiller
-- Helm without Tiller
+- Helm without Tiller - `helm template`
 - raw yaml applied with `kubectl`
 - raw yaml with Kustomize
 
-Helm 2 has some drawbacks in regards to security and stability. A component of Helm 2, called Tiller, is intstalled with cluster wide permissions that are a security concern.
+Helm 2 has some drawbacks in regards to security and stability. A component of Helm 2, called Tiller, is [intstalled with cluster wide permissions (`cluster-admin` ClusterRole)](https://github.com/technosophos/k8s-helm/blob/master/docs/rbac.md#tiller-and-role-based-access-control) and that is a major security concern for many organizations.
 
 This workshop is intended to provide you with an understanding of everything under the hood (or at least as much as possible), and Helm hides a lot of details - as does using `sed` commands to update the CloudBees Core yaml files. However, we still want to make it easy to manage the Kubernetes yaml configuration for CloudBees Core as code - to include more straightforward upgrades. So we will use [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/) along with traditional Kubernetes yaml manifests to manage the install configuration for CloudBees Core.
 
