@@ -95,19 +95,23 @@ This workshop is intended to provide you with an understanding of everything und
     ```
     kubectl get sc
     ```
-11. Google automatically creates a `standard` Storage class, but it is for slower magnetic storage and we want faster SSD storage for CloudBees Core Persistent Volumes. In the Cloud Shell code editor create a file named ***ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
+11. Google automatically creates a `standard` Storage class, but it is for slower magnetic storage and we want faster SSD storage for CloudBees Core Persistent Volumes. In the Cloud Shell code editor create a file named ***regional-ssd-storageclass.yml*** in the ***oc-casc*** directory with the following contents:
     ```yaml
     apiVersion: storage.k8s.io/v1
     kind: StorageClass
     metadata:
-      name: ssd
+      name: regional-ssd
     provisioner: kubernetes.io/gce-pd
     allowVolumeExpansion: true
     parameters:
       type: pd-ssd
+      replication-type: regional-pd
+      zones: us-central1-c, us-central1-f
     ```
     >NOTE: the `type` parameter set to `pd-ssd` and `allowVolumeExpansion` set to true - this will allow us to expand the volumes of Managed Masters from Operations Center ([CloudBees Doc](https://docs.cloudbees.com/docs/cloudbees-core/latest/gke-install-guide/installing-gke-using-installer#_creating_a_new_ssd_persistent_storageclass)). 
-12. Use `kubectl` to apply the ***ssd-storageclass.yml*** file
+
+    ![High Availability: Security](https://img.shields.io/badge/high_availability-security-blue) We also set the `replication-type` to `regional-pd` and then specified the two zones we used when creating the cluster for the value of `zones` **us-central1-c** and **us-central1-f**. Regional persistent disks replicate persistent disks between two zones and will allow CloudBees Core Operations Center to automatically failover to another zone with limited down-time (typically only a few minutes). 
+12. Use `kubectl` to apply the ***regional-ssd-storageclass.yml*** file
     ```
     kubectl apply -f ssd-storageclass.yml
     ```
@@ -137,7 +141,7 @@ This workshop is intended to provide you with an understanding of everything und
         hudson.ExtensionList.lookupSingleton(com.cloudbees.jenkins.support.impl.cloudbees.TcpSlaveAgentListenerMonitor.class).disable(true)
         jenkins.model.JenkinsLocationConfiguration.get().setUrl("http://kmadel.cb-sa.io/cjoc")
     ```
-18. Create a Kustomize patch file - named ***set-storageclass.yml*** in the ***kustomize*** directory - to set the StorageClass to be used for the `cjoc` StatefulSet and override the `storage` size from `20Gi` to `30Gi`:
+18. Create a Kustomize patch file - named ***set-storageclass.yml*** in the ***kustomize*** directory - to set the StorageClass to be used for the `cjoc` StatefulSet and override the `storage` size from `20Gi` to `15Gi`:
     ```yaml
     apiVersion: "apps/v1"
     kind: "StatefulSet"
@@ -150,10 +154,10 @@ This workshop is intended to provide you with an understanding of everything und
         spec:
             accessModes:
             - "ReadWriteOnce"
-            storageClassName: ssd
+            storageClassName: regional-ssd
             resources:
             requests:
-                storage: "30Gi"
+                storage: "15Gi"
     ```
 19. Create another Kustomize patch file - named ***set-ingress-host.yml*** in the ***kustomize*** directory - to override the `host` value for the `cjoc` Ingress:
     ```yaml
