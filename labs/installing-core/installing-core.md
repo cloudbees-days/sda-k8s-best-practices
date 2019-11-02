@@ -191,8 +191,11 @@ This workshop is intended to provide you with an understanding of everything und
     >NOTE: You do not need to specify the Pod `container` using the `-c` flag because the `cjoc-0` Pod only has one container.
 24.  Copy the `initialAdminPassword` value, goto the sub-domain configured above, enter the temporary **Administrator password** you retrieved above and press **Continue**.<p><img src="images/unlock_cloudbees_core.png" width=800/>
 25.  On the next screen, click on **Request a trial license** 
-26.  Create first admin user - can be whatever you want, but make sure you remember what password you use - and then click the **Save and Continue** button.
-27.  Finally, on the next screen, click the **Start using CloudBees Core Cloud Operations Center**.
+26.  Fill out the **Start a free trial** form, check the **I accept the license agreement** checkbox and click the **Submit** button.
+27.  For the **Customize CloudBees Core Cloud Operations Center** click **Install suggested plugins**.
+28.  Create first admin user - can be whatever you want, but make sure you remember what password you use - and then click the **Save and Continue** button.
+29.  Finally, on the next screen, click the **Start using CloudBees Core Cloud Operations Center**.
+30.  Congratulations, you have installed CloudBees Core on GKE!
 
 
 ## Lab Summary
