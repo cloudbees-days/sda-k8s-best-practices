@@ -46,7 +46,8 @@ This workshop is intended to provide you with an understanding of everything und
    ```
 5. You will now need to add an [A record](https://kb.pressable.com/article/dns-record-types-explained/) to map the sub-domain you will be using to the `ingess-nginx` Load balancer or you can use nip.io. The following command will return the external IP of the ingress-nginx load balancer:
    ```
-    kubectl -n ingress-nginx get svc ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}' --watch
+    kubectl -n ingress-nginx get svc ingress-nginx \
+      -o jsonpath='{.status.loadBalancer.ingress[0].ip}' --watch
    ```
    Say `104.196.106.80` was the external IP returned and the domain I am using is `cb-sa.io` and I want the CloudBees Core's URL to be `kmadel.cb-sa.io`. I need to add an A record to the DNS configuration for the `cb-sa.io` domain. 
 
