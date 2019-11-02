@@ -1,9 +1,9 @@
-# Getting Started - Creating a GKE Cluster
+# Getting Started - Creating a Highly Available Regional GKE Cluster ![High Availability: Security](https://img.shields.io/badge/high_availability-security-blue)
 
 ## Overview
 - Create a GitHub Organization for managing all lab configuration as code
 - Create a Google Cloud Platform (GCP) Project
-- Create a Google Kubernetes Engine (GKE) Cluster
+- Create a Regional (multiple Zones) Google Kubernetes Engine (GKE) Cluster
 - Open a Google Cloud Shell workspace and connect to GKE cluster
 
 ## Create GitHub Organization and Repository
@@ -33,8 +33,9 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
 2. On the **Kubernetes Engine > Clusters** screen click on the ***Create cluster*** button <p><img src="images/gke_create_cluster.png" width=800/>
 3. On the **Create a Kubernetes cluster** screen:
    1. Update **Name** to ***cb-core-workshop-cluster***
-   2. Leave **Location type** set to ***Zonal***
-   3. Select a **Zone** that is geographically closest, for example ***us-east1-b*** for Richmond, VA
+   2. Leave **Location type** set to ***Regional***
+   3. Select a **Region** that is geographically closest and has N2 machine types available, for example ***us-central1*** for Richmond, VA
+   >NOTE: [GKE supports three types of clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters): single-zone clusters, multi-zonal clusters and regional clusters. Regional clusters provide the most availability and single-zone clusters provide the least, while regional clusters will the most expensive to run and single-zone clusters will be the least expensive.
    4. Under **Master version** click the version drop-down and select ***1.14.7-gke14***  <p><img src="images/gke_create_master_versions.png" width=500/>
    5. Under **Node pools** click on the **More options** button <p><img src="images/gke_create_more_options.png" width=800/>
    6. On the **Edit node pool** screen:
@@ -42,15 +43,18 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
       2. Under **Size** set the number of nodes to 1, then check the **Enable autoscaling** checkbox and then set **Minimum number of nodes** to 0 and **Maximum number of Nodes** to 3
         >NOTE: Autoscaling will provide dynamic scalability for when your workload increases while also reducing costs when your workload decreases and less nodes are needed. Autoscaling for GKE is based on the [Kubernetes cluster-autoscaler project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) but it is not configurable when using the managed GKE autoscaler. One aspect of the configuration for the cluster-autoscaler is `--scale-down-unneeded-time` that controls how much time the cluster-autoscaler waits when it identifies that a node can be scale down - the default value is **10 minutes** and this cannot be changed when using the GKE autoscaler. If you would like to set a lower threshold then you would have to manual install and manage the cluster-autoscaler on worker nodes (by default, the cluster-autoscale is installed on master nodes).
       3. Under **Nodes** select ***Container-Optimized OS with Containerd (cos_containerd)*** for the **Image type**
-      4. Under **Machine configuration** select ***n1-standard-4 (4 vCPU, 15 GB memory)*** as the **Machine type**
+      4. Under **Machine configuration** select ***N2*** as the **Series** and ***n2-standard-2 (2 vCPU, 8 GB memory)*** as the **Machine type**
       5. Select ***SSD persistent disk** as the **Boot disk type**
         >NOTE: SSD will provide quicker boot times for nodes when they are scale up with autoscaling.
-      6. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
-      7. Click on the **Save** button at the bottom of the screen
+      6. Set the **Boot disk sic (GB)** to ***50***.
+      7. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
+      8. Click on the **Save** button at the bottom of the screen
    7. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
-   8. Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
-   9.  Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
-   10. Review your configuration and then click the **Create** button at the bottom of the screen <p><img src="images/gke_create_usage_metering.png" width=800/>
+   8. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-east-1b*** and ***use-east-1c***
+   >NOTE: By default a regional cluster will use 3 zones, but to minimize costs for the workshop we will on select two - resulting in less availability than the default.
+   9.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
+   10. Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
+   11. Review your configuration and then click the **Create** button at the bottom of the screen <p><img src="images/gke_create_usage_metering.png" width=800/>
 4.  Your GKE cluster should begin to be created - **note that this will take several minutes**
 
 ### What have we done so far?
