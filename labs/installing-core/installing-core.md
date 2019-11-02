@@ -33,8 +33,9 @@ This workshop is intended to provide you with an understanding of everything und
     git clone https://github.com/k8s-core-config/oc-casc.git
     cd oc-casc
    ```
-3. Download the [Kubernetes NGINX Ingress Controller for GKE](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke):
+3. Download the [Kubernetes NGINX Ingress Controller for GKE](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke) to the ***nginx-ingress*** directory:
    ```
+    mkdir nginx-ingress
     curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml -o ./nginx-ingress/nginx-ingress-manadatory.yaml
     curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml -o ./nginx-ingress/nginx-ingress-cloud-generic.yaml
    ```
