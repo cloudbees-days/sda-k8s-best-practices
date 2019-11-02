@@ -8,6 +8,7 @@ CloudBees Core on modern cloud platforms can be installed on any certified Kuber
 - Download CloudBees' Core installer
 - Create necessary Kubernetes requirements for Core
 - Update the yaml configuration
+- Install CloudBees Core Operations Center as a `StatefulSet`
 
 
 ## Kubernetes Installation Options for CloudBees Core
