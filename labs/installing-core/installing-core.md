@@ -36,8 +36,10 @@ This workshop is intended to provide you with an understanding of everything und
 3. Download the [Kubernetes NGINX Ingress Controller for GKE](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke) to the ***nginx-ingress*** directory:
    ```
     mkdir nginx-ingress
-    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml -o ./nginx-ingress/nginx-ingress-manadatory.yaml
-    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml -o ./nginx-ingress/nginx-ingress-cloud-generic.yaml
+    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml \
+      -o ./nginx-ingress/nginx-ingress-manadatory.yaml
+    curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml \
+      -o ./nginx-ingress/nginx-ingress-cloud-generic.yaml
    ```
 4. Use `kubectl` to install the NGINX Ingress Controller and verify that it is running:
    ```
@@ -85,7 +87,7 @@ This workshop is intended to provide you with an understanding of everything und
          labels:
            app.kubernetes.io/name: cb-core
        ```
-9.  Use `kubectl` to apply the ***cb-core-namespace.yml** file:
+9.  Use `kubectl` to apply the ***cb-core-namespace.yml*** file:
     ```
     kubectl apply -f cb-core-namespace.yml
     ```
