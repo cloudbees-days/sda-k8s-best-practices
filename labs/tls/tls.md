@@ -90,7 +90,7 @@
      annotations:
        kubernetes.io/ingress.class: nginx
        cert-manager.io/issuer: "letsencrypt-staging"
-       nginx.ingress.kubernetes.io/app-root: "http://$best_http_host/cjoc/teams-check/"
+       nginx.ingress.kubernetes.io/app-root: "https://$best_http_host/cjoc/teams-check/"
        nginx.ingress.kubernetes.io/ssl-redirect: "true"
        # "413 Request Entity Too Large" uploading plugins, increase client_max_body_size
        nginx.ingress.kubernetes.io/proxy-body-size: 50m
@@ -109,6 +109,7 @@
              serviceName: cjoc
              servicePort: 80
    ```
+   You added the `cert-manager.io/issuer: "letsencrypt-staging"` annotation, updated the `nginx.ingress.kubernetes.io/app-root` value to use `https` and added the `tls` configuration.
    You will also need to modify the `location.groovy` `data` in the `cjoc-configure-jenkins-groovy` `ConfigMap` in the ***cloudbees-core.yml*** file in the ***kustomize*** directory so the Jenkins URL for Operations Center uses `https`:
    ```yaml
    apiVersion: v1
