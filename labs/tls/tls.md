@@ -131,7 +131,7 @@
    ```
 9.  Verify that the certificate was created and is ready:
     ```
-    kkubectl -n cb-core describe certificate cb-core-tls
+    kubectl -n cb-core describe certificate cb-core-tls
     ```
     We want to make sure that the `Certificate` has a `Status` of `True` and a `Type` of `Ready`.
 10. Now that we successfully created a TLS certificate with the Let's Encrypt staging service we will create a Let's Encrypt production `Issuer`. Make a copy of the ***letsencrypt-staging-issuer.yml*** in the ***cert-manager*** directory named ***letsencrypt-production-issuer.yml*** and update the `metadata` `name`, `spec` `acme` `server` and `spec` `acme` `privateKeySecretRef` `name` so it matches the following:
