@@ -169,12 +169,16 @@ This workshop is intended to provide you with an understanding of everything und
 21. Add the following yaml to the ***kustomization.yml*** file:
     ```yaml
     namespace: cb-core
+    images:
+    - name: cloudbees/cloudbees-cloud-core-oc
+      newTag: 2.190.2.2
     resources:
     - cloudbees-core.yml
     patchesStrategicMerge:
     - set-storageclass.yml
     - set-ingress-host.yml
     ```
+    >NOTE: By setting the `namespace` in the ***kustomization.yml*** file it will be applied to all Kubernetes resources defined in the Kustomize `resources` list - in this case `cloudbees-core.yml`. Also note the `images` list - we downloaded an older version of CloudBees Core but want to use the latest, the `newTag` value will be used to replace the image tag for all instances of the specified `name` - `cloudbees/cloudbees-cloud-core-oc` - in all specified `resources`. This approach will provide an easy way to upgrade CloudBees Core.
 22. Use `kubectl` to apply everything ([as of version 1.14 Kustomize is integrated with `kubectl`](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)) - the `-k` flag allows specifying a Kustomize directory - and then check on the rollout status of the `cjoc` `StatefulSet`:
     ```yaml
     kubectl apply -k ./kustomize
