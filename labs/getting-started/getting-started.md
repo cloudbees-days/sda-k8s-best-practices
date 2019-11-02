@@ -50,7 +50,7 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
       7. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
       8. Click on the **Save** button at the bottom of the screen
    7. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
-   8. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-east-1b*** and ***use-east-1c***
+   8. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-central1-c*** and ***us-central1-f*** (us-central1-b does not have N2 machine types)
    >NOTE: By default a regional cluster will use 3 zones, but to minimize costs for the workshop we will on select two - resulting in less availability than the default.
    9.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
    10. Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
@@ -60,6 +60,7 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
 ### What have we done so far?
 We have created a GKE cluster following several best practices:
 
+- ![High Availability: Security](https://img.shields.io/badge/high_availability-security-blue) We created a regional GKE cluster across tow 
 - ![Best Practice: scalability](https://img.shields.io/badge/best_practice-scalability-blue) We enabled [Cluster Autoscaling](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-autoscaler) to allow are cluster to scale from 0 to 3 nodes depending on the workload. In later labs we will see how this provides CD scalability and cost savings for both Core Managed Masters and ephemeral Jenkins Kubernetes Agents.
   >NOTE: While GCP makes it very easy to enable and use cluster autoscaling it does not allow you to modify the [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) configuration such as [the amount of time the Cluster Autoscaler waits to scale down when there is an unneeded node](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#i-have-a-couple-of-nodes-with-low-utilization-but-they-are-not-scaled-down-why) - the default value is 10 minutes and this cannot be modified when using the built-in Cluster Autoscaler for GKE
 - ![Best Practice: security](https://img.shields.io/badge/best_practice-security-blue) ![Best Practice: performance](https://img.shields.io/badge/best_practice-performance-blue) We used [Containerd](https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd) as our node pool image type to [provide better performance](https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/) and additional security for CloudBees Core CD workloads 
@@ -87,22 +88,26 @@ A Cloud Shell workspace will provide all of the tools that we will need for the 
 5. This will return a list of Kubernetes Pods similar to the following - also note that the **NAMESPACE** for all the Pods is `kube-system` - in the next lab we will create a new Kubernetes Namespace for the CloudBees Core install
    
    ```
-   kmadel@cs-6000-devshell-vm-5723798c-973c-4cf7-9ae4-4fea79c7a8f6:~$ kubectl get pods --all-namespaces
+   kmadel@cs-6000-devshell-vm-d9f40fce-1e4b-461f-93df-56779cc04167:~/oc-casc$ kubectl get pods --all-namespaces
    NAMESPACE     NAME                                                             READY   STATUS    RESTARTS   AGE
-   kube-system   event-exporter-v0.2.5-7df89f4b8f-bcrhw                           2/2     Running   0          73s
-   kube-system   fluentd-gcp-scaler-54ccb89d5-kzzlr                               1/1     Running   0          69s
-   kube-system   fluentd-gcp-v3.1.1-bvkxq                                         2/2     Running   0          55s
-   kube-system   heapster-77b57ff7c6-9jrgz                                        3/3     Running   0          73s
-   kube-system   kube-dns-5877696fb4-545j5                                        4/4     Running   0          74s
-   kube-system   kube-dns-autoscaler-85f8bdb54-t7rfd                              1/1     Running   0          69s
-   kube-system   kube-proxy-gke-cb-core-workshop-clu-default-pool-38b555c4-9tk1   1/1     Running   0          61s
-   kube-system   l7-default-backend-8f479dd9-gf6l5                                1/1     Running   0          74s
-   kube-system   metrics-server-v0.3.1-8d4c5db46-d5sdn                            2/2     Running   0          57s
-   kube-system   prometheus-to-sd-xrjnk                                           1/1     Running   0          61s
-   kube-system   stackdriver-metadata-agent-cluster-level-6dc64b4bbc-9ls62        1/1     Running   0          73s
+   kube-system   event-exporter-v0.2.5-7df89f4b8f-x48lh                           2/2     Running   0          9m23s
+   kube-system   fluentd-gcp-scaler-54ccb89d5-r7lq6                               1/1     Running   0          9m19s
+   kube-system   fluentd-gcp-v3.1.1-5f8tp                                         2/2     Running   1          9m11s
+   kube-system   fluentd-gcp-v3.1.1-cg8ww                                         2/2     Running   1          9m11s
+   kube-system   heapster-7bf9d55d99-72wh9                                        3/3     Running   0          9m24s
+   kube-system   kube-dns-5877696fb4-7q6v5                                        4/4     Running   0          9m25s
+   kube-system   kube-dns-5877696fb4-8s72d                                        4/4     Running   0          9m2s
+   kube-system   kube-dns-autoscaler-85f8bdb54-dfnzv                              1/1     Running   0          9m14s
+   kube-system   kube-proxy-gke-cb-core-workshop-cb-core-node-poo-8277fadc-nvn7   1/1     Running   0          9m10s
+   kube-system   kube-proxy-gke-cb-core-workshop-cb-core-node-poo-da7983cd-zkj2   1/1     Running   0          9m20s
+   kube-system   l7-default-backend-8f479dd9-5fs9p                                1/1     Running   0          9m25s
+   kube-system   metrics-server-v0.3.1-8d4c5db46-qz7gg                            2/2     Running   0          9m18s
+   kube-system   prometheus-to-sd-bfrhd                                           1/1     Running   0          9m11s
+   kube-system   prometheus-to-sd-wgvff                                           1/1     Running   0          9m21s
+   kube-system   stackdriver-metadata-agent-cluster-level-74d4c96f96-l998k        1/1     Running   0          9m24s
    ```
 
 ## Lab Summary
-In this lab we created a GKE cluster. In the [next lab](../installing-core/installing-core.md) we will install CloudBees Core on this cluster.
+In this lab we created a regional GKE cluster configured to autoscale ndoes across two zones. In the [next lab](../installing-core/installing-core.md) we will install CloudBees Core on this cluster.
 
 
