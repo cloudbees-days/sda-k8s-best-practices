@@ -81,7 +81,7 @@
    kubectl -n cb-core describe issuer letsencrypt-staging
    ```
    Specifically you will want to see that the `Status` is `True` and the `Type` is `Ready`.
-7. Update the nginx-ingress for CloudBees Core to use TLS and use the staging cert-manager `Issuer` by modifying the ***set-ingress-host.yml*** file in the ***kustomize*** directory so it matches the following:
+7. Update the nginx-ingress for CloudBees Core to use TLS and use the staging cert-manager `Issuer` we just created by modifying the ***set-ingress-host.yml*** file in the ***kustomize*** directory so it matches the following:
    ```yaml
    apiVersion: extensions/v1beta1
    kind: Ingress
@@ -108,6 +108,20 @@
            backend:
              serviceName: cjoc
              servicePort: 80
+   ```
+   You will also need to modify the `location.groovy` `data` in the `cjoc-configure-jenkins-groovy` `ConfigMap` in the ***cloudbees-core.yml*** file in the ***kustomize*** directory so the Jenkins URL for Operations Center uses `https`:
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: cjoc-configure-jenkins-groovy
+     labels:
+       app: cjoc
+       release: "cloudbees-core"
+   data:
+     location.groovy: |
+       hudson.ExtensionList.lookupSingleton(com.cloudbees.jenkins.support.impl.cloudbees.TcpSlaveAgentListenerMonitor.class).disable(true)
+       jenkins.model.JenkinsLocationConfiguration.get().setUrl("**https**://kmadel.cb-sa.io/cjoc")
    ```
 8. Next use `kubectl` to apply the Kustomize patch changes for the `Ingress`:
    ```
