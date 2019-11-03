@@ -87,7 +87,7 @@ Now we don't want to have to add that `Ingress` patch manually to every Managed 
    <p><img src="images/masters_patch_ingress.png" width=800/>
 6. Click the **Save** button to apply the updated **YAML** **Kubernetes Master Provisioning** configuration.
 
-## Jenkins Configuration as Code with CloudBees Configuration Bundles
+## TBD Jenkins Configuration as Code with CloudBees Configuration Bundles
 
 Configuration as code is a best practice for managing Jenkins at scale. Similar to what we have been doing so far for the Kubernetes configuration for Core.
 
@@ -99,6 +99,20 @@ We need to create a directory for each Managed Masters with the following files 
 2. `jenkins.yaml` - This file contains the Jenkins configuration, as defined by the [JCasC plugin](https://github.com/jenkinsci/configuration-as-code-plugin).
 3. `plugins.yaml` - This file contains a list of all the plugins that should be installed on the master.
 4. `plugin-catalog.yaml` - This file contains the plugin catalog definitions that should be created on the master.
+
+Now will create a Configuration Bundle for our Team Master:
+
+1. Make a new ***jcasc-bundles-store*** directory under the ***oc-casc** directory in the GCP Cloud Shell:
+   ```
+   mkdir jcasc-bundles-store
+   ```
+2. Within that directory make a directory with the same name as your Team Mastes (to include the ***teams** folder portion of the name):
+   ```
+   mkdir jcasc-bundles-store/teams-tiger
+   ```
+3. Create the bundle files within the Team Master folder:
+4. Copy to the Operations Center ***jcasc-bundles-store*** directory with `kubectl`:
+5. Restart the Team Master
 
 
 ## JCasC at Scale
