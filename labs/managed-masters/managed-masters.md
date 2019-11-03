@@ -12,7 +12,7 @@ Both types of Masters can be provisioned through the CloudBees Core Operations C
 
 We will start with provisioning a Team Master via the UI:
 
-1. If not in CloudBees Team UI, click on the Teams link in the left menu <p><img src="images/masters_teams_ui.png" width=800/>
+1. If not in CloudBees Team UI, click on the Teams link in the left menu <p><img src="images/masters_teams_ui.png" width=500/>
 2. Next, click on the Create team button in the center of your screen <p><img src="images/masters_create_team.png" width=800/>
 3. Fill out the **New Team** creation form:
    1. Provide a name for your team in **Name this team** - I will call mine ***tiger*** and then click the **Next** button
@@ -55,7 +55,7 @@ We will start with provisioning a Team Master via the UI:
 GKE provides its own ingress solution but it has some limitations that the Nginx ingress does not. Also, if you look at the **Services & Ingress** dashboard in the GKE console you will notice that the **teams-tiger** `Ingress` has a **Status** of ***Creating ingress** even thought it has been created and is working fine. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
 TODO Update to use the Managed Master configuration > Provisioning > Advanced configuration - then update CJOC to affect all future Managed Masters
 
-1. From the **classic UI** of Operations Center hover over the link for your Team Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=800/>
+1. From the **classic UI** of Operations Center hover over the link for your Team Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
 2. Click on **Configure** - this will bring up the same configuration screen you would have seen if you created a ***regular*** Managed Master instead of a Team Master
 3. Under the **Provisioning** configuration scroll down to the **YAML** input under **Advanced configuration** and enter the following Kubernetes patch for the Team Master's `Ingress` resource.
   ```yaml
