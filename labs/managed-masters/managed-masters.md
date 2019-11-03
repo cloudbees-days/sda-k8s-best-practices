@@ -1,6 +1,6 @@
 # Managed Master Provisioning and Configuration ![Best Practice: Scalability](https://img.shields.io/badge/best_practice-scalability-blue)
 
-The dynamic provisioning of Managed Master by Operations Center is an important feature for managing many Jenkins Masters at scale with CloudBees Core on Kubernetes. The ability to quickly and easily provision two pizza team Managed Masters - that are also easier to manage than standalone OSS Jenkins Masters - provides enhance stability, security and better performance per team.
+The dynamic provisioning of Managed Master by Operations Center is an important feature for managing many Jenkins Masters at scale with CloudBees Core on Kubernetes. The ability to quickly and easily provision two pizza team Managed Masters - that are also easier to manage than standalone OSS Jenkins Masters - provides enhanced stability, security and better performance per team.
 
 ## Provisioning Masters
 There are two types of Managed Masters for CloudBees Core:
@@ -53,7 +53,6 @@ We will start with provisioning a Team Master via the UI:
 ## Nginx Ingress Issues on GKE
 
 GKE provides its own ingress solution but it has some limitations that the Nginx ingress does not. Also, if you look at the **Services & Ingress** dashboard in the GKE console you will notice that the **teams-tiger** `Ingress` has a **Status** of ***Creating ingress** even thought it has been created and is working fine. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
-TODO Update to use the Managed Master configuration > Provisioning > Advanced configuration - then update CJOC to affect all future Managed Masters
 
 1. From the **classic UI** of Operations Center hover over the link for your Team Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
 2. Click on **Configure** - this will bring up the same configuration screen you would have seen if you created a ***regular*** Managed Master instead of a Team Master
@@ -69,7 +68,7 @@ TODO Update to use the Managed Master configuration > Provisioning > Advanced co
    Once you insert that into the left text area input for the **YAML** configuration and click outside of it, should see the `Ingress` resource on the right updated to reflect the patch. <p><img src="images/masters_yaml_ingress_patch.png" width=800/>
 4. Click the **Save** button.
 5. In order for the patch to be applied we must **Restart** the Team Master <p><img src="images/masters_restart.png" width=800/>
-6. Once it has restarted check the GKE console, you should see that the `Ingress` for the Team Master has a **Status** of ***Ok***.
+6. Once it has restarted check the GKE console, you should see that the `Ingress` for the Team Master has a **Status** of ***Ok***. <p><img src="images/masters_gke_ingress_ok.png" width=700/>
 
 Now we don't want to have to add that `Ingress` patch manually to every Managed Master we provision (especially Team Masters since we can't do it until after they are created). Operations Center allows you to specify Kubernetes YAML patches that will be applied to all provisioned Managed Masters - but it will only be applied to newly provisioned Managed Masters, not Managed Masters that have already been provisioned.
 
@@ -91,6 +90,15 @@ Now we don't want to have to add that `Ingress` patch manually to every Managed 
 ## Jenkins Configuration as Code with CloudBees Configuration Bundles
 
 Configuration as code is a best practice for managing Jenkins at scale. Similar to what we have been doing so far for the Kubernetes configuration for Core.
+
+>NOTE: The CloudBees Configuration Bundle is currently in Technical Preview and should not be used in a production environment.
+
+We need to create a directory for each Managed Masters with the following files and then copy that directory into the ***jcasc-bundles-store*** directory in the Jenkins home directory of Operations Center:
+
+1. `bundle.yaml` - This file is an index file that describes the bundle, and references the other files in the bundle.
+2. `jenkins.yaml` - This file contains the Jenkins configuration, as defined by the [JCasC plugin](https://github.com/jenkinsci/configuration-as-code-plugin).
+3. `plugins.yaml` - This file contains a list of all the plugins that should be installed on the master.
+4. `plugin-catalog.yaml` - This file contains the plugin catalog definitions that should be created on the master.
 
 
 ## JCasC at Scale
