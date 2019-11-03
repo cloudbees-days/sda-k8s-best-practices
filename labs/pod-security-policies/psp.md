@@ -125,7 +125,16 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
    ```
    kubectl apply -k ./kustomize
    ```
-2. The `cjoc-0` `Pod` will start shortly after applying the updated `kustomization.yml`.
+2. The `cjoc-0` `Pod` will start shortly after applying the updated `kustomization.yml`. Verify that the `cjoc-0` Pod started successfully:
+   ```
+   kubectl -n cb-core describe sts cjoc
+   ````
+   You should see the following event:
+   ```
+   Normal   SuccessfulCreate  5s                     statefulset-controller\
+     create Pod cjoc-0 in StatefulSet cjoc successful
+   ```
+
 
 ## Lab Summary
 In this lab we updated the cluster to use Pod Security Policies and created a restrictive policy to use with CloudBees Core Pods. In the [next lab](../managed-masters/managed-masters.md) we will look at provisioning Managed Masters from CloudBees Core Operations Center.
