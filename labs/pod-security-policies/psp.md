@@ -4,6 +4,7 @@
 
 ## Overview
 
+Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*](https://technologists.dev/posts/best-practices-for-cloudbees-core-jenkins-on-kubernetes/core-psp/) for an in depth look at using PSPs with Core.
 
 ## Enable PodSecurityPolicies
 
@@ -72,6 +73,59 @@
      hostNetwork: false
      allowPrivilegeEscalation: false
    ```
-1. Apply the PSP to the `cjoc-master-management` `Role` resources by applying it to the `cjoc` `ServiceAccount` via a `ClusterRoleBinding`:
-2. The `cjoc-0` `Pod` will now start:
-3. Now we need to apply 
+1. To get the `cjoc-0` Pod running again we will create a new `ClusterRole` and a `ClusterRoleBinding` to apply it to the `cjoc` `ServiceAccount`:
+   1. Update the ***cb-restricted-psp.yml*** file with the following `ClusterRole`:
+   ```yaml
+   ---
+   # restricted psp to be use accross cluster.
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: ClusterRole
+   metadata:
+     name: restricted-psp-cluster-role
+   rules:
+   - apiGroups:
+     - policy
+     resources:
+     - podsecuritypolicies
+     resourceNames:
+     - cb-restricted
+     verbs:
+     - use
+   ```
+   1. Next we will add the following `RoleBinding` to the ***cb-restricted-psp.yml*** to bind the `restricted-psp-cluster-role` to the `cjoc` `ServiceAccount`:
+   ```yaml
+   ---
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: restricted-psp-role
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: ClusterRole
+     name: restricted-psp-cluster-role
+   subjects:
+   - kind: ServiceAccount
+     name: cjoc
+     namespace: cb-core
+   ```
+   1. Update the ***kustomization.yml*** file to add ***cb-restricted-psp.yml*** as a `resource`:
+   ```yaml
+   namespace: cb-core
+   images:
+   - name: cloudbees/cloudbees-cloud-core-oc
+     newTag: 2.190.2.2
+   resources:
+   - cloudbees-core.yml
+   - cb-restricted-psp.yml
+   patchesStrategicMerge:
+   - set-ingress-host.yml
+   - set-storageclass.yml
+   ```
+   And then apply it with `kubectl`:
+   ```
+   kubectl apply -k ./kustomize
+   ```
+2. The `cjoc-0` `Pod` will start shortly after applying the updated `kustomization.yml`.
+
+## Lab Summary
+In this lab we updated the cluster to use Pod Security Policies and created a restrictive policy to use with CloudBees Core Pods. In the [next lab](../managed-masters/managed-masters.md) we will look at provisioning Managed Masters from CloudBees Core Operations Center.
