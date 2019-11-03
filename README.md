@@ -51,6 +51,7 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 * Lab 9: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
 * Lab 10: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
 * Lab 11: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
+* Lab 12: [Disaster Recovery for Core](labs/disaster-recovery/disaster-recovery.md)
 
 
 
