@@ -45,13 +45,15 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 * Lab 3: [Securing CloudBees Core with HTTPS and TLS](labs/tls/tls.md)
 * Lab 4: [Pod Security Policies](labs/pod-security-policies/psp.md)
 * Lab 5: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
-* Lab 6: [Securing Masters with Namespaces](labs/master-namespaces/master-namespaces.md)
-* Lab 7: [Configuration as Code for Core]
-* Lab 8: [Hibernating Masters and Affinity](labs/hibernating-masters/hibernating-masters.md)
-* Lab 9: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
-* Lab 10: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
-* Lab 11: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
-* Lab 12: [Disaster Recovery for Core](labs/disaster-recovery/disaster-recovery.md)
+* Lab 6: [Configuration as Code for Core](labs/casc-core/casc-core.md)
+* Lab 7: [Custom Container Images for Core](labs/custom-container-images/custom-container-images.md)
+* Lab 8: [Securing Masters with Namespaces](labs/master-namespaces/master-namespaces.md)
+* Lab 9: [Hibernating Masters and Affinity](labs/hibernating-masters/hibernating-masters.md)
+* Lab 10: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
+* Lab 11: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
+* Lab 12: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
+* Lab 13: [Disaster Recovery for Core](labs/disaster-recovery/disaster-recovery.md)
+* Lab 14: [Pod Network Policies]
 
 
 
