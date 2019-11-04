@@ -55,9 +55,9 @@ We will start with provisioning a regular Managed Master via the UI:
 
 GKE provides its own ingress solution but it has some limitations that the Nginx ingress does not. Also, if you look under the **Ingresses** tab in the **Services & Ingress** dashboard of the GKE console you will notice that the **teams-test** `Ingress` has a **Status** of ***Creating ingress** even though it has been created and the Managed Master is accessible - meaning the ingress is working. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
 
-1. From the **classic UI** of Operations Center hover over the link for your Team Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
-2. Click on **Configure** - this will bring up the same configuration screen you would have seen if you created a ***regular*** Managed Master instead of a Team Master
-3. Under the **Provisioning** configuration scroll down to the **YAML** input under **Advanced configuration** and enter the following Kubernetes patch for the Team Master's `Ingress` resource.
+1. From the **classic UI** of Operations Center hover over the link for your Managed Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
+2. Click on **Configure** - this will bring up the same configuration screen used when creating the Managed Master.
+3. Under the **Provisioning** configuration scroll down to the **YAML** input under **Advanced configuration** and enter the following Kubernetes patch for the Managed Master's `Ingress` resource.
   ```yaml
    ---
    kind: Ingress
@@ -66,10 +66,10 @@ GKE provides its own ingress solution but it has some limitations that the Nginx
        kubernetes.io/ingress.class: "nginx"
    ```
    This patch will tell GKE that this is an **nginx** `Ingress` and GKE will no longer assume that it is a GKE `Ingress` that doesn't support `ClusterIP`.
-   Once you insert that into the left text area input for the **YAML** configuration and click outside of it, should see the `Ingress` resource on the right updated to reflect the patch. <p><img src="images/masters_yaml_ingress_patch.png" width=800/>
+   Once you insert that into the left text area input for the **YAML** configuration and click outside of it, you should see the `Ingress` resource on the right updated to reflect the patch. <p><img src="images/masters_yaml_ingress_patch.png" width=800/>
 4. Click the **Save** button.
-5. In order for the patch to be applied we must **Restart** the Team Master <p><img src="images/masters_restart.png" width=800/>
-6. Once it has restarted check the GKE console, you should see that the `Ingress` for the Team Master has a **Status** of ***Ok***. <p><img src="images/masters_gke_ingress_ok.png" width=700/>
+5. In order for the patch to be applied we must **Restart** the Managed Master <p><img src="images/masters_restart.png" width=800/>
+6. Once it has restarted check the GKE console, you should see that the `Ingress` for your Managed Master has a **Status** of ***Ok***. <p><img src="images/masters_gke_ingress_ok.png" width=700/>
 
 Now we don't want to have to add that `Ingress` patch manually to every Managed Master we provision (especially Team Masters since we can't do it until after they are created). Operations Center allows you to specify Kubernetes YAML patches that will be applied to all provisioned Managed Masters - but it will only be applied to newly provisioned Managed Masters, not Managed Masters that have already been provisioned.
 
@@ -88,7 +88,7 @@ Now we don't want to have to add that `Ingress` patch manually to every Managed 
    <p><img src="images/masters_patch_ingress.png" width=800/>
 6. Click the **Save** button to apply the updated **YAML** **Kubernetes Master Provisioning** configuration.
 
-## TBD Jenkins Configuration as Code with CloudBees Configuration Bundles
+## NOT RELEASED Jenkins Configuration as Code with CloudBees Configuration Bundles
 
 Configuration as code is a best practice for managing Jenkins at scale. Similar to what we have been doing so far for the Kubernetes configuration for Core.
 
@@ -114,8 +114,3 @@ Now will create a Configuration Bundle for our Team Master:
 3. Create the bundle files within the Team Master folder:
 4. Copy to the Operations Center ***jcasc-bundles-store*** directory with `kubectl`:
 5. Restart the Team Master
-
-
-## JCasC at Scale
-
-Use `yq` to merge a based JCasC yaml file with a Managed Master specific JCasC yaml.
