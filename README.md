@@ -1,4 +1,4 @@
-# Best practices for CloudBees Core on Kubernetes Workshop
+# Kubernetes Best practices for CloudBees Core Workshop
 
 This workshop will provide a holistic set of best practices for running CloudBees Core on Kubernetes.
 
@@ -29,8 +29,11 @@ In order to follow along with the hands on portion of the workshop students shou
     - admin:org_hook
     - user: all
   * A Google Cloud Platform Account and Project
-  * A basic understanding of Docker: https://docs.docker.com/get-started/
-  * A basic understanding of Kubernetes: https://kubernetes.io/docs/tutorials/kubernetes-basics/
+  * Understand what Kubernetes is: https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/ 
+    * [A basic understanding of Kubernetes](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
+    * [Containers vs Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/)
+    * [Persistent services with Stateful Sets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+    * [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
   * A sub-domain to use for the workshop and the ability to add an A record to the DNS configuration for that domain
     >NOTE: If you don't have access to a domain that you can modify the DNS records then you can use [nip.io](https://nip.io).
    

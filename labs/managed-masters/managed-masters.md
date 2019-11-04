@@ -88,6 +88,14 @@ Now we don't want to have to add that `Ingress` patch manually to every Managed 
    <p><img src="images/masters_patch_ingress.png" width=800/>
 6. Click the **Save** button to apply the updated **YAML** **Kubernetes Master Provisioning** configuration.
 
+## Other Issues
+
+Persistent storage.
+Affinity.
+
+## Lab Summary
+We provisioned a Managed Master and saw how we can manage provisioning configuration in Operations Center for all Managed Masters. In the [next lab](../casc-core/casc-core.md) we will look at configuration-as-code for Operations Center and Managed Masters.
+
 ## NOT RELEASED Jenkins Configuration as Code with CloudBees Configuration Bundles
 
 Configuration as code is a best practice for managing Jenkins at scale. Similar to what we have been doing so far for the Kubernetes configuration for Core.
@@ -114,3 +122,4 @@ Now will create a Configuration Bundle for our Team Master:
 3. Create the bundle files within the Team Master folder:
 4. Copy to the Operations Center ***jcasc-bundles-store*** directory with `kubectl`:
 5. Restart the Team Master
+
