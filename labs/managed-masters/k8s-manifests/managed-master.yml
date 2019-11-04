@@ -1,0 +1,181 @@
+---
+apiVersion: "apps/v1"
+kind: "StatefulSet"
+metadata:
+  annotations: {}
+  labels:
+    type: "master"
+    tenant: "teams-test"
+    com.cloudbees.pse.type: "master"
+    com.cloudbees.cje.type: "master"
+    com.cloudbees.pse.tenant: "teams-test"
+    com.cloudbees.cje.tenant: "teams-test"
+  name: "teams-test"
+spec:
+  selector:
+    matchLabels:
+      type: "master"
+      tenant: "teams-test"
+      com.cloudbees.pse.type: "master"
+      com.cloudbees.cje.type: "master"
+      com.cloudbees.pse.tenant: "teams-test"
+      com.cloudbees.cje.tenant: "teams-test"
+  serviceName: "teams-test"
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        type: "master"
+        tenant: "teams-test"
+        com.cloudbees.pse.type: "master"
+        com.cloudbees.cje.type: "master"
+        com.cloudbees.pse.tenant: "teams-test"
+        com.cloudbees.cje.tenant: "teams-test"
+      name: "teams-test"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "kubernetes.io/os"
+                operator: "In"
+                values:
+                - "linux"
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: "com.cloudbees.cje.type"
+                  operator: "In"
+                  values:
+                  - "cjoc"
+                matchLabels: {}
+              topologyKey: "kubernetes.io/hostname"
+            weight: 1
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: "jenkins"
+                  operator: "In"
+                  values:
+                  - "slave"
+                matchLabels: {}
+              topologyKey: "kubernetes.io/hostname"
+            weight: 1
+      containers:
+      - env:
+        - name: "ENVIRONMENT"
+          value: "KUBERNETES"
+        - name: "JAVA_OPTS"
+          value: "-Xmx2150m -Xms2150m -Djenkins.model.Jenkins.slaveAgentPortEnforce=\"\
+            true\" -Djenkins.model.Jenkins.slaveAgentPort=\"50001\" -DMASTER_GRANT_ID=\"\
+            9f4b3bda-b40b-4963-bfc1-3d07c8d958a8\" -DMASTER_DOMAIN=\"null\" -Dcb.IMProp.warProfiles.cje=\"\
+            kubernetes.json\" -DMASTER_INDEX=\"0\" -DMASTER_OPERATIONSCENTER_ENDPOINT=\"\
+            http://cjoc.cb-core.svc.cluster.local/cjoc\" -Dhudson.lifecycle=\"hudson.lifecycle.ExitLifecycle\"\
+            \ -DMASTER_NAME=\"test\" -DMASTER_ENDPOINT=\"https://kmadel.cb-sa.io/teams-test/\"\
+            \ -XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AlwaysPreTouch -XX:+UseG1GC\
+            \ -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication\
+            \ -Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.DNSMultiCast.disabled=true"
+        - name: "JENKINS_OPTS"
+          value: "--prefix=/teams-test/"
+        - name: "KUBERNETES_JENKINS_URL"
+          value: "http://teams-test.cb-core.svc.cluster.local/teams-test/"
+        image: "cloudbees/cloudbees-core-mm:2.190.2.2"
+        livenessProbe:
+          httpGet:
+            path: "/teams-test/login"
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 10
+        name: "jenkins"
+        ports:
+        - containerPort: 8080
+        - containerPort: 50001
+        resources:
+          limits:
+            cpu: "1.000000"
+            memory: "3072.000000M"
+          requests: {}
+        volumeMounts:
+        - mountPath: "/var/jenkins_home"
+          name: "jenkins-home"
+      nodeSelector: {}
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: "jenkins"
+      terminationGracePeriodSeconds: 1200
+  volumeClaimTemplates:
+  - apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    metadata:
+      annotations: {}
+      labels: {}
+      name: "jenkins-home"
+    spec:
+      accessModes:
+      - "ReadWriteOnce"
+      resources:
+        limits: {}
+        requests:
+          storage: "50Gi"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  annotations: {}
+  labels:
+    type: "master"
+    tenant: "teams-test"
+    com.cloudbees.pse.type: "master"
+    com.cloudbees.cje.type: "master"
+    com.cloudbees.pse.tenant: "teams-test"
+    com.cloudbees.cje.tenant: "teams-test"
+  name: "teams-test"
+spec:
+  ports:
+  - name: "http"
+    port: 80
+    protocol: "TCP"
+    targetPort: 8080
+  - name: "agent"
+    port: 50001
+    protocol: "TCP"
+    targetPort: 50001
+  selector:
+    type: "master"
+    tenant: "teams-test"
+    com.cloudbees.pse.type: "master"
+    com.cloudbees.cje.type: "master"
+    com.cloudbees.pse.tenant: "teams-test"
+    com.cloudbees.cje.tenant: "teams-test"
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "50m"
+    ingress.kubernetes.io/proxy-request-buffering: "off"
+  labels:
+    type: "master"
+    tenant: "teams-test"
+    com.cloudbees.pse.type: "master"
+    com.cloudbees.cje.type: "master"
+    com.cloudbees.pse.tenant: "teams-test"
+    com.cloudbees.cje.tenant: "teams-test"
+  name: "teams-test"
+spec:
+  rules:
+  - host: "kmadel.cb-sa.io"
+    http:
+      paths:
+      - backend:
+          serviceName: "teams-test"
+          servicePort: 80
+        path: "/teams-test/"

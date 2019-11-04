@@ -11,7 +11,9 @@ Managed Master hibernation for CloudBees Core consists of two components:
 
 ### Install `managed-master-hibernation-monitor` `Service`
 
-1. 
+1. Download the `managed-master-hibernation-monitor` Kubernetes YAML manifest into the ***kustomize*** directory:
+2. Update the ***cb-restricted-psp.yml*** file to add the `managed-master-hibernation-monitor` `ServiceAccount` as a `subject` to the `restricted-psp-role` `RoleBinding`:
+3. Apply 
 
 ### Install and Configure the CloudBees Managed Master Hibernation Plugin
 
