@@ -246,6 +246,7 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    - kind: ServiceAccount
      name: nginx-ingress-serviceaccount
    ```
+   The `ingress-nginx` `nginx-ingress-controller` `Pod` requires a few additional privileges that are not enabled for the `cb-restricted` PSP - specifically the `NET_BIND_SERVICE` as an `allowedCapabilities`, `allowPrivilegeEscalation` set to `true` and the `hostPorts` `min` value set to `80`.
 2. Apply the updates with `kubectl`:
    ```
    kubectl apply -f cert-manager-ingress-nginx-restricted-psp.yml
@@ -255,7 +256,7 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    kubectl -n cert-manager delete pod --all 
    kubectl -n ingress-nginx delete pod --all 
    ```
-4. Now let's see if the `Pods` were recreated in the the GCP console for **Kubernetes Engine** > **Workloads**.
+4. Now let's see if the cert-manager and ingress-nginx `Pods` were recreated in the the GCP console for **Kubernetes Engine** > **Workloads**. <p><img src="images/psp_workloads_cert_nginx.png" width=800/>
 5. 
 
 ## Lab Summary
