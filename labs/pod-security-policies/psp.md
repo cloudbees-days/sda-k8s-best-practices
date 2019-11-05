@@ -168,24 +168,65 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    - apiGroup: rbac.authorization.k8s.io
      kind: Group
      name: system:serviceaccounts
-
    ---
-   # Bind the ClusterRole to the desired set of service accounts.
-   # Policies should typically be bound to service accounts in a namespace.
-   apiVersion: rbac.authorization.k8s.io/v1
-   kind: RoleBinding
+   apiVersion: policy/v1beta1
+   kind: PodSecurityPolicy
    metadata:
-     name: ingress-nginx-psp-restricted
+     annotations:
+       # Assumes apparmor available
+       apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+       apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+       seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+       seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+     name: ingress-nginx
+   spec:
+     allowedCapabilities:
+     - NET_BIND_SERVICE
+     allowPrivilegeEscalation: true
+     fsGroup:
+       rule: 'MustRunAs'
+       ranges:
+       - min: 1
+         max: 65535
+     hostIPC: false
+     hostNetwork: false
+     hostPID: false
+     privileged: false
+     readOnlyRootFilesystem: false
+     runAsUser:
+       rule: 'MustRunAsNonRoot'
+       ranges:
+       - min: 33
+         max: 65535
+     seLinux:
+       rule: 'RunAsAny'
+     supplementalGroups:
+       rule: 'MustRunAs'
+       ranges:
+       # Forbid adding the root group.
+       - min: 1
+         max: 65535
+     volumes:
+     - 'configMap'
+     - 'downwardAPI'
+     - 'emptyDir'
+     - 'projected'
+     - 'secret'
+   ---
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: Role
+   metadata:
+     name: ingress-nginx-psp
      namespace: ingress-nginx
-   roleRef:
-     apiGroup: rbac.authorization.k8s.io
-     kind: ClusterRole
-     name: gce:podsecuritypolicy:privileged  
-   subjects:
-   # Example: All service accounts in my-namespace
-   - apiGroup: rbac.authorization.k8s.io
-     kind: Group
-     name: system:serviceaccounts
+   rules:
+   - apiGroups:
+     - policy
+     resourceNames:
+     - ingress-nginx
+     resources:
+     - podsecuritypolicies
+     verbs:
+     - use
    ```
 2. Apply the updates with `kubectl`:
    ```
