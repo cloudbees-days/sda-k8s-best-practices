@@ -257,7 +257,6 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    kubectl -n ingress-nginx delete pod --all 
    ```
 4. Now let's see if the cert-manager and ingress-nginx `Pods` were recreated in the the GCP console for **Kubernetes Engine** > **Workloads**. <p><img src="images/psp_workloads_cert_nginx.png" width=800/>
-5. 
 
 ## Lab Summary
 In this lab we updated the cluster to use Pod Security Policies and created a restrictive policy to use with CloudBees Core Pods. In the [next lab](../managed-masters/managed-masters.md) we will look at provisioning Managed Masters from CloudBees Core Operations Center.
