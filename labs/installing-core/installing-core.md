@@ -38,13 +38,13 @@ This workshop is intended to provide you with an understanding of everything und
    ```
     mkdir nginx-ingress
     curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml \
-      -o ./nginx-ingress/nginx-ingress-manadatory.yaml
+      -o ./nginx-ingress/nginx-ingress-mandatory.yaml
     curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml \
       -o ./nginx-ingress/nginx-ingress-cloud-generic.yaml
    ```
 4. Use `kubectl` to install the NGINX Ingress Controller and verify that it is running:
    ```
-    kubectl apply -f ./nginx-ingress/nginx-ingress-manadatory.yaml
+    kubectl apply -f ./nginx-ingress/nginx-ingress-mandatory.yaml
     kubectl apply -f ./nginx-ingress/nginx-ingress-cloud-generic.yaml
     kubectl get pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
    ```
@@ -122,8 +122,8 @@ This workshop is intended to provide you with an understanding of everything und
    ```
 16. Download the [latest CloudBees' Core installer](https://downloads.cloudbees.com/cloudbees-core/cloud/latest/), verify , unarchive it into the `oc-casc` directory, delete the archive and copy the ***cloudbees-core.yml*** file into the ***kustomize*** directory we created above:
    ```
-    curl -O https://downloads.cloudbees.com/cloudbees-core/cloud/latest/cloudbees-core_2.176.4.3_kubernetes.tgz 
-    curl -O https://downloads.cloudbees.com/cloudbees-core/cloud/latest/cloudbees-core_2.176.4.3_kubernetes.tgz.sha256
+    curl -O https://downloads.cloudbees.com/cloudbees-core/cloud/2.176.4.3/cloudbees-core_2.176.4.3_kubernetes.tgz
+    curl -O  https://downloads.cloudbees.com/cloudbees-core/cloud/2.176.4.3/cloudbees-core_2.176.4.3_kubernetes.tgz.sha256 
     export INSTALLER=cloudbees-core_2.176.4.3_kubernetes.tgz
     sha256sum -c $INSTALLER.sha256
     tar xzvf $INSTALLER
