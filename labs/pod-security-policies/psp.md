@@ -10,10 +10,10 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
 
 1. We will use the [`glcoud` CLI to enable PSPs](https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies#enabling_podsecuritypolicy_controller) for the Core GKE cluster:
    ```
-   gcloud beta container clusters update cb-core-workshop-cluster \
+   gcloud beta container clusters update  standard-cluster-1 \
     --enable-pod-security-policy --region us-central1 --project k8s-core-best-practices
    ```
-   This will take a few minutes as all the nodes (master and worker) must be recreated.
+   This will take a few minutes as all the nodes (master and worker) must be recreated. While the cluster is being updated let's take a look at [Pod Security Policies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/).
    >NOTE: Pod Security Policies is a beta feature for GKE.
 2. Now we will try and restart the CloudBees Core Operations Center `Pod` by scaling the replicas of the **cjoc** `StatefulSet` to 0 and then back to 1:
    ```
@@ -147,7 +147,65 @@ If we were to restart the Pods associated with ingress-nginx and cert-manager we
 
 ### PSP for ingress-nginx
 
-The **cb-restricted** PSP will not work for ingress-nginx because it requires a `hostPorts` range of **80-65535**
+Because the **cert-manager** and **ingress-nginx** are both is their own `Namespace` we cannot just as their `ServiceAccounts` to the `restricted-psp-role` `RoleBinding` that we created for the `cjoc` `ServiceAccount`. We will need to create `RoleBindings` that allow those `ServiceAccounts` to use the `cb-restricted` PSP in their respective `Namespaces`. We will use a special Kubernetes `Group` to accomplish this - `system:serviceaccounts`.
+
+1. Update the ***cb-restricted-psp.yml*** file with the following `RoleBindings`:
+   ```yaml
+   ---
+   # Bind the ClusterRole to the desired set of service accounts.
+   # Policies should typically be bound to service accounts in a namespace.
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: cert-manager-psp-restricted
+     namespace: cert-manager
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: ClusterRole
+     name: restricted-psp-cluster-role
+   subjects:
+   # Example: All service accounts in my-namespace
+   - apiGroup: rbac.authorization.k8s.io
+     kind: Group
+     name: system:serviceaccounts
+
+   ---
+   # Bind the ClusterRole to the desired set of service accounts.
+   # Policies should typically be bound to service accounts in a namespace.
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: ingress-nginx-psp-restricted
+     namespace: ingress-nginx
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: ClusterRole
+     name: restricted-psp-cluster-role
+   subjects:
+   # Example: All service accounts in my-namespace
+   - apiGroup: rbac.authorization.k8s.io
+     kind: Group
+     name: system:serviceaccounts
+   ```
+2. Apply the updates with `kubectl`:
+   ```
+   kubectl apply -k ./kustomize
+   ```
+3. Now we will restart all the `Pods` in the `ingress-nginx` and `cert-manager` `Namespaces` and make sure they come back up. We will do that by deleting all the `Pods` in those two `Namespaces`:
+   ```
+   kubectl -n cert-manager delete pod --all 
+   kubectl -n ingress-nginx delete pod --all 
+   ```
+4. Now let's see if the `Pods` were recreated.
+   First for cert-manager:
+   ```
+   kubectl -n cert-manager describe pod --all
+   ```
+   And then for ingress-nginx:
+   ```
+   kubectl -n ingress-nginx describe pod --all
+   ```
+5. 
 
 ## Lab Summary
 In this lab we updated the cluster to use Pod Security Policies and created a restrictive policy to use with CloudBees Core Pods. In the [next lab](../managed-masters/managed-masters.md) we will look at provisioning Managed Masters from CloudBees Core Operations Center.
