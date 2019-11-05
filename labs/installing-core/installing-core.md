@@ -78,7 +78,7 @@ This workshop is intended to provide you with an understanding of everything und
    If don't have a domain that you can add an A record to, then you can use nip.io - no DNS configuration required - so our Core sub-domain for the above IP would be: `104-196-106-80.nip.io`
 
 6. Launch the [Cloud Shell code editor](https://cloud.google.com/shell/docs/viewing-and-editing-files) by clicking on the pencil button  <p><img src="images/open_cloud_shell_editor.png" width=800/>
-7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml**  <p><img src="images/create_namespace_file.png" width=800/>
+7. In the Cloud Shell code editor navigate to the ***oc-casc*** directory and create a new file named ***cb-core-namespace.yml***  <p><img src="images/create_namespace_file.png" width=800/>
 8.  Add the following yaml to the ***cb-core-namespace.yml*** file:
        ```yaml
        apiVersion: v1
