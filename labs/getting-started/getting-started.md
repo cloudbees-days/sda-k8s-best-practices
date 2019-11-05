@@ -34,7 +34,7 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
 3. On the **Create a Kubernetes cluster** screen:
    1. Set the **Location type** to ***Regional***
    2. Select a **Region** that is geographically closest and has N2 machine types available, for example ***us-central1*** for Richmond, VA
-   >NOTE: [GKE supports three types of locations for clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters): single-zone clusters, multi-zonal clusters and regional clusters. Regional clusters provide the most availability and single-zone clusters provide the least, while regional clusters will the most expensive to run and single-zone clusters will be the least expensive.
+   >NOTE: [GKE supports three types of locations for clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters): single-zone clusters, multi-zonal clusters and regional clusters. Regional clusters provide the most availability and single-zone clusters provide the least, while regional clusters will be the most expensive to run and single-zone clusters will be the least expensive.
    1. Under **Master version** click the version drop-down and select ***1.14.7-gke14***  <p><img src="images/gke_create_master_versions.png" width=500/>
    2. Under **Node pools** click on the **More options** button <p><img src="images/gke_create_more_options.png" width=800/>
    3. On the **Edit node pool** screen:
