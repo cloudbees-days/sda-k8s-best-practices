@@ -16,8 +16,8 @@ We will start with provisioning a regular Managed Master via the UI:
 2. Navigate to the **Teams** folder by going to the **All** view and then click on the **Teams** folder. <p><img src="images/masters_teams_folder.png" width=800/>
 3. In the left menu click on the **New Item** link, **Enter an item name** - I will use ***test*** -, select **Managed Master** and then click the **OK** button. <p><img src="images/masters_create_managed_master.png" width=800/>
 4. The Managed Master configuration form provides a number of inputs, but for now we are just going to accept the defaults and click the **Save** button. <p><img src="images/masters_config_form.png" width=800/>
-5. It will take a few minutes for your new Managed Master to be provisioned. However, if you open up the GCP console for **Kubernetes Engine** > **Workloads** you should see your new Managed Master listed as a **Stateful Set** with a **Pods** value of **0/1** - meaning the desired state is 1 pod but there are currently 0 <p><img src="images/masters_gke_workloads.png" width=800/>
-6. In the GCP console, click on the **Name** of you Managed Master - the name for mine is **teams-test** - and under **Managed pods** you will see that there are ***No matching pods***
+5. It will take a few minutes for your new Managed Master to be provisioned. However, if you open up the GCP console for **Kubernetes Engine** > **Workloads** you should see your new Managed Master listed as a **Stateful Set** with a **Pods** value of **0/1** - meaning the desired state is **1** pod but there are currently **0** <p><img src="images/masters_gke_workloads.png" width=800/>
+6. In the GCP console, click on the **Name** of you Managed Master (the `StatefulSet`) - the name for mine is **teams-test** - and under **Managed pods** you may initially sett that the **Pods are pending**, but eventually you will see that there are ***No matching pods***
 7. We could use `kubectl` to see what is going on, but we can also use the GCP console - at the top of the **Stateful set details** screen click on the **Events** tab and you should see a **FailedCreate** message referring to pod security polices <p><img src="images/masters_failedcreate_psp.png" width=800/>
    >NOTE: You will also see an error message referring to ***evaluating the ingress spec*** - we will explain this and fix it in a later section of this lab.
 8. Next, if you look at the **YAML** tab and scroll down to where the `serviceAccount` is specified, you will see that the Managed Master was provisioned with the `jenkins` ServiceAccount <p><img src="images/masters_yaml_sa.png" width=800/>
@@ -54,7 +54,7 @@ We will start with provisioning a regular Managed Master via the UI:
 
 ## Nginx Ingress Issues on GKE
 
-GKE provides its own ingress solution but it has some limitations that the Nginx ingress does not. Also, if you look under the **Ingresses** tab in the **Services & Ingress** dashboard of the GKE console you will notice that the **teams-test** `Ingress` has a **Status** of ***Creating ingress** even though it has been created and the Managed Master is accessible - meaning the ingress is working. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
+GKE provides its own [ingress solution](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) but it isn't full supported by CloudBees. The Nginx `Ingess` is recommended and fully suppoted by CloudBees. However, there is some additional configuration required for GKE. Ff you look under the **Ingresses** tab in the **Services & Ingress** dashboard of the GKE console you will notice that the **teams-test** `Ingress` has a **Status** of ***Creating ingress** even though it has been created and the Managed Master is accessible - meaning the ingress is working. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
 
 1. From the **classic UI** of Operations Center hover over the link for your Managed Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
 2. Click on **Configure** - this will bring up the same configuration screen used when creating the Managed Master.
@@ -68,6 +68,7 @@ GKE provides its own ingress solution but it has some limitations that the Nginx
    ```
    This patch will tell GKE that this is an **nginx** `Ingress` and GKE will no longer assume that it is a GKE `Ingress` that doesn't support `ClusterIP`.
    Once you insert that into the left text area input for the **YAML** configuration and click outside of it, you should see the `Ingress` resource on the right updated to reflect the patch. <p><img src="images/masters_yaml_ingress_patch.png" width=800/>
+   
 4. Click the **Save** button.
 5. In order for the patch to be applied we must **Restart** the Managed Master <p><img src="images/masters_restart.png" width=800/>
 6. Once it has restarted check the GKE console, you should see that the `Ingress` for your Managed Master has a **Status** of ***Ok***. <p><img src="images/masters_gke_ingress_ok.png" width=700/>
