@@ -73,7 +73,12 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
      hostNetwork: false
      allowPrivilegeEscalation: false
    ```
-1. To get the `cjoc-0` Pod running again we will create a new `ClusterRole` and a `ClusterRoleBinding` to apply it to the `cjoc` `ServiceAccount`:
+   Some things to note about this `PodSecurityPolicy`:
+   - `privileged`: set to `false` will disallow the use of Docker-in-Docker (DinD).
+   - `runAsUser`: set to `MustRunAs` a range of **1 to 65535** so containers can’t run as the ROOT user.
+   - `allowPrivilegeEscalation`: disable privilege escalation so that no child process of a container can gain more privileges than its parent.
+   - `volumes`: Don’t allow mounting host directories/files as volumes by specifying specific volume types and not allowing the `hostPath` volume for any CD containers. This will disable the ability to [mount the Docker socket](https://github.com/jenkinsci/kubernetes-plugin/blob/master/examples/dood.groovy#L15).
+4. To get the `cjoc-0` Pod running again we will create a new `ClusterRole` and a `ClusterRoleBinding` to apply it to the `cjoc` `ServiceAccount`:
    1. Update the ***cb-restricted-psp.yml*** file with the following `ClusterRole`:
    ```yaml
    ---
@@ -125,7 +130,7 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
    ```
    kubectl apply -k ./kustomize
    ```
-2. The `cjoc-0` `Pod` will start shortly after applying the updated `kustomization.yml`. Verify that the `cjoc-0` Pod started successfully:
+5. The `cjoc-0` `Pod` will start shortly after applying the updated `kustomization.yml`. Verify that the `cjoc-0` Pod started successfully:
    ```
    kubectl -n cb-core describe sts cjoc
    ````
@@ -135,6 +140,14 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
      create Pod cjoc-0 in StatefulSet cjoc successful
    ```
 
+
+## Pod Security Policies for Nginx Ingress and cert-manager
+
+If we were to restart the Pods associated with ingress-nginx and cert-manager we would see that they would not start just as the `cjoc-0` Pod would not start above. Again, all Kubernetes `ServiceAccounts` must have a `Role`/`ClusterRole` with a valid PSP bound to them or else the `ServiceAccount` cannot be used to create a Pod.
+
+### PSP for ingress-nginx
+
+The **cb-restricted** PSP will not work for ingress-nginx because it requires a `hostPorts` range of **80-65535**
 
 ## Lab Summary
 In this lab we updated the cluster to use Pod Security Policies and created a restrictive policy to use with CloudBees Core Pods. In the [next lab](../managed-masters/managed-masters.md) we will look at provisioning Managed Masters from CloudBees Core Operations Center.

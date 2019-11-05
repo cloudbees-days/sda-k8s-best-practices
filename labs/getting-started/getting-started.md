@@ -32,29 +32,27 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
 1. In the GCP console - within the GPC project you created for this workshop - navigate to **Compute > Kubernetes Engine** and click on ***Clusters*** <p><img src="images/gke_clusters.png" width=800/>
 2. On the **Kubernetes Engine > Clusters** screen click on the ***Create cluster*** button <p><img src="images/gke_create_cluster.png" width=800/>
 3. On the **Create a Kubernetes cluster** screen:
-   1. Update **Name** to ***cb-core-workshop-cluster***
-   2. Leave **Location type** set to ***Regional***
-   3. Select a **Region** that is geographically closest and has N2 machine types available, for example ***us-central1*** for Richmond, VA
-   >NOTE: [GKE supports three types of clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters): single-zone clusters, multi-zonal clusters and regional clusters. Regional clusters provide the most availability and single-zone clusters provide the least, while regional clusters will the most expensive to run and single-zone clusters will be the least expensive.
-   4. Under **Master version** click the version drop-down and select ***1.14.7-gke14***  <p><img src="images/gke_create_master_versions.png" width=500/>
-   5. Under **Node pools** click on the **More options** button <p><img src="images/gke_create_more_options.png" width=800/>
-   6. On the **Edit node pool** screen:
-      1. Change the **Name** to ***cb-core-node-pool***
-      2. Under **Size** set the number of nodes to 1, then check the **Enable autoscaling** checkbox and then set **Minimum number of nodes** to 0 and **Maximum number of Nodes** to 3
+   1. Set the **Location type** to ***Regional***
+   2. Select a **Region** that is geographically closest and has N2 machine types available, for example ***us-central1*** for Richmond, VA
+   >NOTE: [GKE supports three types of locations for clusters](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters): single-zone clusters, multi-zonal clusters and regional clusters. Regional clusters provide the most availability and single-zone clusters provide the least, while regional clusters will the most expensive to run and single-zone clusters will be the least expensive.
+   1. Under **Master version** click the version drop-down and select ***1.14.7-gke14***  <p><img src="images/gke_create_master_versions.png" width=500/>
+   2. Under **Node pools** click on the **More options** button <p><img src="images/gke_create_more_options.png" width=800/>
+   3. On the **Edit node pool** screen:
+      1. Under **Size** set the number of nodes to 1, then check the **Enable autoscaling** checkbox and then set **Minimum number of nodes** to 0 and **Maximum number of Nodes** to 3
         >NOTE: Autoscaling will provide dynamic scalability for when your workload increases while also reducing costs when your workload decreases and less nodes are needed. Autoscaling for GKE is based on the [Kubernetes cluster-autoscaler project](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) but it is not configurable when using the managed GKE autoscaler. One aspect of the configuration for the cluster-autoscaler is `--scale-down-unneeded-time` that controls how much time the cluster-autoscaler waits when it identifies that a node can be scale down - the default value is **10 minutes** and this cannot be changed when using the GKE autoscaler. If you would like to set a lower threshold then you would have to manual install and manage the cluster-autoscaler on worker nodes (by default, the cluster-autoscale is installed on master nodes).
-      3. Under **Nodes** select ***Container-Optimized OS with Containerd (cos_containerd)*** for the **Image type**
-      4. Under **Machine configuration** select ***N2*** as the **Series** and ***n2-standard-2 (2 vCPU, 8 GB memory)*** as the **Machine type**
-      5. Select ***SSD persistent disk** as the **Boot disk type**
+      2. Under **Machine configuration** select ***N2*** as the **Series** and ***Custom*** as the **Machine type**. For the custom settings configure **4** **Cores** and **10.5 GB** of **Memory**. A typical Core Managed Master is configure to use **3 GB** of memory, so these settings will allow there to be 3 Managed Masters on one node. <p><img src="images/gke_custom_machine.png" width=800/>
+      3. Select ***SSD persistent disk** as the **Boot disk type**
         >NOTE: SSD will provide quicker boot times for nodes when they are scale up with autoscaling.
-      6. Set the **Boot disk sic (GB)** to ***50***.
-      7. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
-      8. Click on the **Save** button at the bottom of the screen
-   7. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
-   8. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-central1-c*** and ***us-central1-f*** (us-central1-b does not have N2 machine types)
-   >NOTE: By default a regional cluster will use 3 zones, but to minimize costs for the workshop we will on select two - resulting in less availability than the default.
-   9.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
-   10. Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
-   11. Review your configuration and then click the **Create** button at the bottom of the screen <p><img src="images/gke_create_usage_metering.png" width=800/>
+      4. Set the **Boot disk sic (GB)** to ***50***.
+      5. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
+      6. Click on the **Save** button at the bottom of the screen
+   4. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
+   5. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-central1-c*** and ***us-central1-f*** (do not select us-central1-b as it does not have N2 machine types)
+   >NOTE: By default a regional cluster will use 3 zones, but to minimize costs for the workshop we will only select two - resulting in less availability than the default but still provide multi-zone failover.
+   1.  Check the box for **Enable Workload Identity (beta)**. We will learn more about Workload Identity for GKE in the lab on Jenkins Pipelines and Pod Templates.
+   2.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
+   3.  Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
+   4.  Review your configuration and then click the **Create** button at the bottom of the screen.
 4.  Your GKE cluster should begin to be created - **note that this will take several minutes**
 
 ### What have we done so far?
@@ -63,7 +61,7 @@ We have created a GKE cluster following several best practices:
 - ![High Availability: Security](https://img.shields.io/badge/high_availability-security-blue) We created a regional GKE cluster across tow 
 - ![Best Practice: scalability](https://img.shields.io/badge/best_practice-scalability-blue) We enabled [Cluster Autoscaling](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-autoscaler) to allow are cluster to scale from 0 to 3 nodes depending on the workload. In later labs we will see how this provides CD scalability and cost savings for both Core Managed Masters and ephemeral Jenkins Kubernetes Agents.
   >NOTE: While GCP makes it very easy to enable and use cluster autoscaling it does not allow you to modify the [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) configuration such as [the amount of time the Cluster Autoscaler waits to scale down when there is an unneeded node](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#i-have-a-couple-of-nodes-with-low-utilization-but-they-are-not-scaled-down-why) - the default value is 10 minutes and this cannot be modified when using the built-in Cluster Autoscaler for GKE
-- ![Best Practice: security](https://img.shields.io/badge/best_practice-security-blue) ![Best Practice: performance](https://img.shields.io/badge/best_practice-performance-blue) We used [Containerd](https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd) as our node pool image type to [provide better performance](https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/) and additional security for CloudBees Core CD workloads 
+- ![Best Practice: security](https://img.shields.io/badge/best_practice-security-blue) ![Best Practice: performance](https://img.shields.io/badge/best_practice-performance-blue) ~We used [Containerd](https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd) as our node pool image type to [provide better performance](https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/) and additional security for CloudBees Core CD workloads~
 - We added a Kubernetes label to the node pool we created so that we can target different node pools for different CloudBees Core CD workloads. We only have one node pool right now - that we will use for CloudBees Core and general Jenkins Kubernetes agent workloads - but we will be adding another node pool for more specific workloads in another lab.
 - ![Best Practice: security](https://img.shields.io/badge/best_practice-security-blue) We enabled GKE **Workload Identity** and in a later lab we will see how this provides a more secure way of interacting with other GCP services (like GCR) from Jenkins Kubernetes agent Pods
 - We enabled **GKE usage monitoring** to provide more detailed monitory to track costs of our cluster resources down to the Kubernetes Namespace level
@@ -88,26 +86,29 @@ A Cloud Shell workspace will provide all of the tools that we will need for the 
 5. This will return a list of Kubernetes Pods similar to the following - also note that the **NAMESPACE** for all the Pods is `kube-system` - in the next lab we will create a new Kubernetes Namespace for the CloudBees Core install
    
    ```
-   kmadel@cs-6000-devshell-vm-d9f40fce-1e4b-461f-93df-56779cc04167:~/oc-casc$ kubectl get pods --all-namespaces
-   NAMESPACE     NAME                                                             READY   STATUS    RESTARTS   AGE
-   kube-system   event-exporter-v0.2.5-7df89f4b8f-x48lh                           2/2     Running   0          9m23s
-   kube-system   fluentd-gcp-scaler-54ccb89d5-r7lq6                               1/1     Running   0          9m19s
-   kube-system   fluentd-gcp-v3.1.1-5f8tp                                         2/2     Running   1          9m11s
-   kube-system   fluentd-gcp-v3.1.1-cg8ww                                         2/2     Running   1          9m11s
-   kube-system   heapster-7bf9d55d99-72wh9                                        3/3     Running   0          9m24s
-   kube-system   kube-dns-5877696fb4-7q6v5                                        4/4     Running   0          9m25s
-   kube-system   kube-dns-5877696fb4-8s72d                                        4/4     Running   0          9m2s
-   kube-system   kube-dns-autoscaler-85f8bdb54-dfnzv                              1/1     Running   0          9m14s
-   kube-system   kube-proxy-gke-cb-core-workshop-cb-core-node-poo-8277fadc-nvn7   1/1     Running   0          9m10s
-   kube-system   kube-proxy-gke-cb-core-workshop-cb-core-node-poo-da7983cd-zkj2   1/1     Running   0          9m20s
-   kube-system   l7-default-backend-8f479dd9-5fs9p                                1/1     Running   0          9m25s
-   kube-system   metrics-server-v0.3.1-8d4c5db46-qz7gg                            2/2     Running   0          9m18s
-   kube-system   prometheus-to-sd-bfrhd                                           1/1     Running   0          9m11s
-   kube-system   prometheus-to-sd-wgvff                                           1/1     Running   0          9m21s
-   kube-system   stackdriver-metadata-agent-cluster-level-74d4c96f96-l998k        1/1     Running   0          9m24s
+   NAMESPACE     NAME                                                           READY   STATUS    RESTARTS   AGE
+   kube-system   event-exporter-v0.2.5-7df89f4b8f-bgdk9                         2/2     Running   0          13m
+   kube-system   fluentd-gcp-scaler-54ccb89d5-8zpjg                             1/1     Running   0          13m
+   kube-system   fluentd-gcp-v3.1.1-fdtvv                                       2/2     Running   1          13m
+   kube-system   fluentd-gcp-v3.1.1-h54r4                                       2/2     Running   1          12m
+   kube-system   gke-metadata-server-8hr8v                                      1/1     Running   0          13m
+   kube-system   gke-metadata-server-hqsxv                                      1/1     Running   0          13m
+   kube-system   heapster-688bd7c4c5-gztdg                                      3/3     Running   0          13m
+   kube-system   kube-dns-5877696fb4-chpm9                                      4/4     Running   0          13m
+   kube-system   kube-dns-5877696fb4-mkmhq                                      4/4     Running   0          13m
+   kube-system   kube-dns-autoscaler-85f8bdb54-hmrst                            1/1     Running   0          13m
+   kube-system   kube-proxy-gke-standard-cluster-1-default-pool-ccd9b174-ljz9   1/1     Running   0          13m
+   kube-system   kube-proxy-gke-standard-cluster-1-default-pool-f15449fa-53ph   1/1     Running   0          13m
+   kube-system   l7-default-backend-8f479dd9-tbj6r                              1/1     Running   0          13m
+   kube-system   metrics-server-v0.3.1-8d4c5db46-6lvm9                          2/2     Running   0          13m
+   kube-system   netd-7n9fd                                                     1/1     Running   0          13m
+   kube-system   netd-qzgz5                                                     1/1     Running   0          13m
+   kube-system   prometheus-to-sd-4fkdt                                         1/1     Running   0          13m
+   kube-system   prometheus-to-sd-gzgjc                                         1/1     Running   0          13m
+   kube-system   stackdriver-metadata-agent-cluster-level-7ffcbc857b-bf94d      1/1     Running   0          13
    ```
 
 ## Lab Summary
-In this lab we created a regional GKE cluster configured to autoscale ndoes across two zones. In the [next lab](../installing-core/installing-core.md) we will install CloudBees Core on this cluster.
+In this lab we created a regional GKE cluster configured to autoscale nodes across two zones. In the [next lab](../installing-core/installing-core.md) we will install CloudBees Core on this cluster.
 
 
