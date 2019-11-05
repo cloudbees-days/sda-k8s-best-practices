@@ -169,6 +169,12 @@ This workshop is intended to provide you with an understanding of everything und
     spec:
       rules:
       - host: "kmadel.cb-sa.io"
+        http:
+          paths:
+          - path: /cjoc
+            backend:
+              serviceName: cjoc
+              servicePort: 80
     ```
 20. Create a Kustomize file named ***kustomization.yml*** in the ***kustomize*** directory to apply the `cb-core` Namespace to all the Kubernetes Resources defined in the ***cloudbees-core.yml*** file, patch the `cjoc` `StatefulSet` to set the `StorageClass` and patch the `cjoc` `Ingress` resource with our sub-domain
 21. Add the following yaml to the ***kustomization.yml*** file:
