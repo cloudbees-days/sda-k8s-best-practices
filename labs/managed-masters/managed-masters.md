@@ -54,7 +54,7 @@ We will start with provisioning a regular Managed Master via the UI:
 
 ## Nginx Ingress Issues on GKE
 
-GKE provides its own [ingress solution](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) but it isn't full supported by CloudBees. The Nginx `Ingess` is recommended and fully suppoted by CloudBees. However, there is some additional configuration required for GKE. Ff you look under the **Ingresses** tab in the **Services & Ingress** dashboard of the GKE console you will notice that the **teams-test** `Ingress` has a **Status** of ***Creating ingress** even though it has been created and the Managed Master is accessible - meaning the ingress is working. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
+GKE provides its own [ingress solution](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) but it isn't full supported by CloudBees. The Nginx `Ingess` is recommended and fully suppoted by CloudBees. However, there is some additional configuration required for GKE. If you look under the **Ingresses** tab in the **Services & Ingress** dashboard of the GKE console you will notice that the **teams-test** `Ingress` has a **Status** of ***Creating ingress** even though it has been created and the Managed Master is accessible - meaning the ingress is working. <p><img src="images/masters_gke_creating_ingress.png" width=800/>
 
 1. From the **classic UI** of Operations Center hover over the link for your Managed Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
 2. Click on **Configure** - this will bring up the same configuration screen used when creating the Managed Master.
@@ -68,10 +68,12 @@ GKE provides its own [ingress solution](https://cloud.google.com/kubernetes-engi
    ```
    This patch will tell GKE that this is an **nginx** `Ingress` and GKE will no longer assume that it is a GKE `Ingress` that doesn't support `ClusterIP`.
    Once you insert that into the left text area input for the **YAML** configuration and click outside of it, you should see the `Ingress` resource on the right updated to reflect the patch. <p><img src="images/masters_yaml_ingress_patch.png" width=800/>
-   
+
 4. Click the **Save** button.
 5. In order for the patch to be applied we must **Restart** the Managed Master <p><img src="images/masters_restart.png" width=800/>
 6. Once it has restarted check the GKE console, you should see that the `Ingress` for your Managed Master has a **Status** of ***Ok***. <p><img src="images/masters_gke_ingress_ok.png" width=700/>
+
+### Update Kubernetes Master Provisioning
 
 Now we don't want to have to add that `Ingress` patch manually to every Managed Master we provision (especially Team Masters since we can't do it until after they are created). Operations Center allows you to specify Kubernetes YAML patches that will be applied to all provisioned Managed Masters - but it will only be applied to newly provisioned Managed Masters, not Managed Masters that have already been provisioned.
 
@@ -92,11 +94,31 @@ Now we don't want to have to add that `Ingress` patch manually to every Managed 
 
 ## Persistent Storage
 
-Persistent storage.
-Affinity.
+CloudBees Core Operations Center and Managed Masters depend on [Kubernetes persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). When we installed CloudBees Core we created a Kubernetes `StorageClass` named `regional-ssd` and configured the `cjoc` `StatefulSet` to use that `StorageClass`. If you navigate to the **Storage** dashboard of the GKE console you will notice that the **jenkins-home-teams-test-0** persistent volume claim has a **Storage class** value of **standard** instead of **regional-ssd**. This means that if the zone where the **teams-test** Managed Master was deployed it would be able to be restarted in the second zone we set up for the Core GKE cluster (remember it is a regional cluster with two zones) as standard storage is zone specific. We would like all Managed Masers to use the **regional-ssd** `StorageClass`. But this is not something  we can manage via the Managed Master Provisioning YAML snippet we used for adding the `nginx` `kubernetes.io/ingress.class` above. Rather there is a specific **Default Storage Class Name** field under the **Advanced** settings for **Kubernetes Master Provisioning** configuration.
+
+1. Click on **Manage Jenkins** in the left menu of CloudBees Core Operations Center
+2. Click on **Configure System**
+3. Scroll down to and click the **Advanced** button under **Kubernetes Master Provisioning**
+4. Scroll down to the **Default Storage Class Name** field and enter ***regional-ssd***.
+5. Click the **Save** button.
+
+### Delete teams-test Managed Master
+
+We cannot update the **teams-test** Managed Master that we already created to use the new `StorageClass` and since we haven't actually added any Jenkins jobs to it, we will just delete it and then create a new Managed Master in the next lab.
+
+1. From the **classic UI** of Operations Center hover over the link for the **teams-test** Managed Master and click on the small black triangle to bring up the Managed Master context menu. <p><img src="images/masters_context_menu.png" width=600/>
+2. Select **Manage** and then select **Stop** <p><img src="images/masters_manage_stop.png" width=600/>
+3. On the next screen click the **Force** button - note if this were a production Managed Masters with job potentially running you would want to click the **Wait** button.
+4. Wait ~10 seconds until you see the **Start** and **Delete** options under the **Manage** item in the left menu, and then click on **Delete** <p><img src="images/masters_manage_delete.png" width=600/>
+5. Click the **Yes** to delete the Managed Master.
+6. Open up the GCP console for **Kubernetes Engine** > **Workloads** you should no longer see the **teams-test** **Stateful set**.
+7. Next, navigate to the **Storage** dashboard and you will still see the **jenkins-home-teams-test-0** persistent volume claim (PVC). That is because Core Operations Center does not automatically delete PVCs by default. Go ahead and manually delete the **jenkins-home-teams-test-0** PVC via the GKE **Storage** console.
+
+>NOTE: The `com.cloudbees.masterprovisioning.kubernetes.KubernetesMasterProvisioning.deleteClaim` `JAVA_OPTS` systems property can be set to `true` to have Core OC automatically delete PVCs when a Managed Master is deleted, but this is an all or none setting.
+
 
 ## Lab Summary
-We provisioned a Managed Master and saw how we can manage provisioning configuration in Operations Center for all Managed Masters. In the [next lab](../casc-core/casc-core.md) we will look at configuration-as-code for Operations Center and Managed Masters.
+We provisioned a Managed Master and saw how we can manage provisioning configuration in Operations Center for all Managed Masters. In the [next lab](../master-namespaces/master-namespaces.md) we will look at provisioning Managed Masters into their own Kubernetes `Namespace`.
 
 ## NOT RELEASED Jenkins Configuration as Code with CloudBees Configuration Bundles
 
