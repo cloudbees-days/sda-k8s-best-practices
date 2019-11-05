@@ -227,6 +227,21 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
      - podsecuritypolicies
      verbs:
      - use
+   ---
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: ingress-nginx-psp
+     namespace: ingress-nginx
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: Role
+     name: ingress-nginx-psp
+   subjects:
+   - kind: ServiceAccount
+     name: default
+   - kind: ServiceAccount
+     name: nginx-ingress-serviceaccount
    ```
 2. Apply the updates with `kubectl`:
    ```
