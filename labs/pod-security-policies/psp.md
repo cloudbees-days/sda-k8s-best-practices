@@ -191,6 +191,9 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
      hostIPC: false
      hostNetwork: false
      hostPID: false
+     hostPorts:
+     - min: 80
+       max: 65535
      privileged: false
      readOnlyRootFilesystem: false
      runAsUser:
