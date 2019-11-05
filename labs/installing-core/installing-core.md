@@ -152,12 +152,12 @@ This workshop is intended to provide you with an understanding of everything und
         volumeClaimTemplates:
         - metadata:
             name: jenkins-home
-        spec:
+          spec:
             accessModes:
             - "ReadWriteOnce"
             storageClassName: regional-ssd
             resources:
-            requests:
+              requests:
                 storage: "15Gi"
     ```
 19. Create another Kustomize patch file - named ***set-ingress-host.yml*** in the ***kustomize*** directory - to override the `host` value for the `cjoc` Ingress:
