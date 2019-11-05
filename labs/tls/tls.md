@@ -1,6 +1,6 @@
 # HTTPS for CloudBees Core ![Best Practice: Security](https://img.shields.io/badge/best_practice-security-blue)
 
-[cert-manager](https://docs.cert-manager.io/en/latest/index.html) is a Kubernetes add-on to automate the management and issuance of TLS certificates from various issuing sources. For this workshop we will leverage the LetsEncrypt free and automate Certificate Authority to provide for TLS termination at the Kubernetes cluster ingress and allow us to use the HTTPS protocol for the CloudBees Core URL.
+[cert-manager](https://docs.cert-manager.io/en/latest/index.html) is a Kubernetes add-on to automate the management and issuance of TLS certificates from various issuing sources. For this workshop we will leverage the LetsEncrypt free and automated Certificate Authority to provide for TLS termination at the Kubernetes cluster ingress and allow us to use the HTTPS protocol for the CloudBees Core URL.
 
 ## Install cert-manager
 
@@ -48,7 +48,7 @@
    replicaset.apps/cert-manager-cainjector-6885996d5   1         1         1       169d
    replicaset.apps/cert-manager-webhook-59dfddccfd     1         1         1       169d
    ```
-5. Now we will create a staging cert-manager Issuer that will dynamically - a cert-manager CRD that is configured to dynamically issue certs for properly configured Ingresses. The Issuer that we are creating will obtain signed [x509 certificates](https://en.wikipedia.org/wiki/X.509) from [Let's Encrypt](https://letsencrypt.org/) (a free and automated Certificate Authority) using the [Automated Certificate Management Environment (ACME) protocol](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment). In the Cloud Shell code editor create a file named ***letsencrypt-staging-issuer.yml*** in the ***cert-manager*** directory with the following contents, replacing the email value with your own: 
+5. Now we will create a staging cert-manager [Issuer](https://docs.cert-manager.io/en/latest/reference/issuers.html) - a cert-manager CRD that is configured to dynamically issue certs for properly configured Ingresses. The Issuer that we are creating will obtain signed [x509 certificates](https://en.wikipedia.org/wiki/X.509) from [Let's Encrypt](https://letsencrypt.org/) (a free and automated Certificate Authority) using the [Automated Certificate Management Environment (ACME) protocol](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment). In the Cloud Shell code editor create a file named ***letsencrypt-staging-issuer.yml*** in the ***cert-manager*** directory with the following contents, replacing the email value with your own: 
    ```yaml
    apiVersion: cert-manager.io/v1alpha2
    kind: Issuer
@@ -178,4 +178,4 @@
 15. Next, open CloudBees Core Operations Center at `https://{your.sub.domain}/cjoc/`. 
 
 ## Lab Summary
-In this lab we configured Core to use HTTPS/TLS with cert-manager and Let's Encrypt. In the [next lab](../pod-security-policies/psp.md) we will enable [Pod Security Polices (PSP) for our Kubernetes](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) cluster and look at how PSPs provide fine-grained control of security sensitive aspect for Pod creation and updates.
+In this lab we configured Core to use HTTPS/TLS with cert-manager and Let's Encrypt. In the [next lab](../pod-security-policies/psp.md) we will enable [Pod Security Polices (PSP) for our Kubernetes](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) cluster and look at how PSPs provide fine-grained control of security sensitive aspects for Pod creation and updates.
