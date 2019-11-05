@@ -145,11 +145,11 @@ Checkout [*Using Kubernetes Pod Security Policies with CloudBees Core - Jenkins*
 
 If we were to restart the Pods associated with ingress-nginx and cert-manager we would see that they would not start just as the `cjoc-0` Pod would not start above. Again, all Kubernetes `ServiceAccounts` must have a `Role`/`ClusterRole` with a valid PSP bound to them or else the `ServiceAccount` cannot be used to create a Pod.
 
-### PSP for ingress-nginx
+### PSP for cert-manager and ingress-nginx
 
 Because the **cert-manager** and **ingress-nginx** are both is their own `Namespace` we cannot just as their `ServiceAccounts` to the `restricted-psp-role` `RoleBinding` that we created for the `cjoc` `ServiceAccount`. We will need to create `RoleBindings` that allow those `ServiceAccounts` to use the `cb-restricted` PSP in their respective `Namespaces`. We will use a special Kubernetes `Group` to accomplish this - `system:serviceaccounts`.
 
-1. Update the ***cb-restricted-psp.yml*** file with the following `RoleBindings`:
+1. Create a new file ***cert-manager-ingress-nginx-restricted-psp.yml*** file in the ***oc-casc** directory with the following `RoleBindings`:
    ```yaml
    ---
    # Bind the ClusterRole to the desired set of service accounts.
@@ -162,7 +162,7 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    roleRef:
      apiGroup: rbac.authorization.k8s.io
      kind: ClusterRole
-     name: restricted-psp-cluster-role
+     name: restricted-psp-cluster-role 
    subjects:
    # Example: All service accounts in my-namespace
    - apiGroup: rbac.authorization.k8s.io
@@ -180,7 +180,7 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    roleRef:
      apiGroup: rbac.authorization.k8s.io
      kind: ClusterRole
-     name: restricted-psp-cluster-role
+     name: restricted-psp-cluster-role 
    subjects:
    # Example: All service accounts in my-namespace
    - apiGroup: rbac.authorization.k8s.io
@@ -189,22 +189,14 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    ```
 2. Apply the updates with `kubectl`:
    ```
-   kubectl apply -k ./kustomize
+   kubectl apply -f cert-manager-ingress-nginx-restricted-psp.yml
    ```
 3. Now we will restart all the `Pods` in the `ingress-nginx` and `cert-manager` `Namespaces` and make sure they come back up. We will do that by deleting all the `Pods` in those two `Namespaces`:
    ```
    kubectl -n cert-manager delete pod --all 
    kubectl -n ingress-nginx delete pod --all 
    ```
-4. Now let's see if the `Pods` were recreated.
-   First for cert-manager:
-   ```
-   kubectl -n cert-manager describe pod --all
-   ```
-   And then for ingress-nginx:
-   ```
-   kubectl -n ingress-nginx describe pod --all
-   ```
+4. Now let's see if the `Pods` were recreated in the the GCP console for **Kubernetes Engine** > **Workloads**.
 5. 
 
 ## Lab Summary
