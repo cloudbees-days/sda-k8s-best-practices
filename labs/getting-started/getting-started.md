@@ -47,12 +47,12 @@ For the purposes of this workshop, the Google Cloud Platform provides the best t
       5. Under **Metadata > Kubernetes labels** click the **Add label** button and add a label with a **Key** of ***workload*** and a **Value** of ***general*** <p><img src="images/gke_create_add_label.png" width=800/>
       6. Click on the **Save** button at the bottom of the screen
    4. Back on the **Create a Kubernetes cluster** screen scroll down to and click **Availability, networking, security, and additional features**
-   5. Under **Availability** check the ***Manually select node locations*** checkbox and then select only two zones - for example ***us-central1-c*** and ***us-central1-f*** (do not select us-central1-b as it does not have N2 machine types)
+   5. Under **Availability** check the ***Manually select node locations*** checkbox and then select the ***us-central1-c*** and ***us-central1-f*** zones (do not select **us-central1-a** or **us-central1-b** as they do not have N2 machine types)
    >NOTE: By default a regional cluster will use 3 zones, but to minimize costs for the workshop we will only select two - resulting in less availability than the default but still provide multi-zone failover.
-   2.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
-   3.  Check the box for **Enable Workload Identity (beta)**. We will learn more about Workload Identity for GKE in the lab on Jenkins Pipelines and Pod Templates.
-   4.  Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
-   5.  Review your configuration and then click the **Create** button at the bottom of the screen.
+   1.  Under **Maintenance window (beta)** select ***12:00 AM*** as the **Start time** and ***4h*** as the **Length** - we don't want our clusters restarting for an upgrade during the workshop <p><img src="images/gke_maintenance_window.png" width=800/>
+   2.  Check the box for **Enable Workload Identity (beta)**. We will learn more about Workload Identity for GKE in the lab on Jenkins Pipelines and Pod Templates.
+   3.  Under **Stackdriver** check the **Enable Stackdriver Kubernetes Engine Monitoring** checkbox if it isn't already checked
+   4.  Review your configuration and then click the **Create** button at the bottom of the screen.
 4.  Your GKE cluster should begin to be created - **note that this will take several minutes**
 
 ### What have we done so far?
