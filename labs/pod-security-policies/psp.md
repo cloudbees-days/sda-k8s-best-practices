@@ -180,7 +180,7 @@ Because the **cert-manager** and **ingress-nginx** are both is their own `Namesp
    roleRef:
      apiGroup: rbac.authorization.k8s.io
      kind: ClusterRole
-     name: restricted-psp-cluster-role 
+     name: gce:podsecuritypolicy:privileged  
    subjects:
    # Example: All service accounts in my-namespace
    - apiGroup: rbac.authorization.k8s.io
