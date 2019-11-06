@@ -123,7 +123,7 @@
    data:
      location.groovy: |
        hudson.ExtensionList.lookupSingleton(com.cloudbees.jenkins.support.impl.cloudbees.TcpSlaveAgentListenerMonitor.class).disable(true)
-       jenkins.model.JenkinsLocationConfiguration.get().setUrl("**https**://kmadel.cb-sa.io/cjoc")
+       jenkins.model.JenkinsLocationConfiguration.get().setUrl("https://kmadel.cb-sa.io/cjoc")
    ```
 8. Next use `kubectl` to apply the Kustomize patch changes for the `Ingress`:
    ```
