@@ -201,7 +201,7 @@ This workshop is intended to provide you with an understanding of everything und
     ```
     If that command returns something like `cat: /var/jenkins_home/secrets/initialAdminPassword: No such file or directory command terminated with exit code 1` then that means that Operations Center is not up and running yet, just retry until the initial admin password is returned.
     >NOTE: You do not need to specify the Pod `container` using the `-c` flag because the `cjoc-0` Pod only has one container.
-24.  Copy the `initialAdminPassword` value, goto the sub-domain configured above, enter the temporary **Administrator password** you retrieved above and press **Continue**.<p><img src="images/unlock_cloudbees_core.png" width=800/>
+24.  Copy the `initialAdminPassword` value, goto the sub-domain configured above: `http://[YOUR_DOMAIN]/cjoc`, enter the temporary **Administrator password** you retrieved above and press **Continue**.<p><img src="images/unlock_cloudbees_core.png" width=800/>
 25.  On the next screen, click on **Request a trial license** 
 26.  Fill out the **Start a free trial** form, check the **I accept the license agreement** checkbox and click the **Submit** button.
 27.  For the **Customize CloudBees Core Cloud Operations Center** click **Install suggested plugins**.
