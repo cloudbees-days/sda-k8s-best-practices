@@ -165,7 +165,7 @@
     ```
     kubectl -n cb-core describe issuer letsencrypt-production
     ```
-12. Next update the cb-core Ingress by modifying the ***set-ingress-host.yml*** file in the ***kustomize*** directory to use the production Issuer: `cert-manager.io/issuer: "letsencrypt-production"`
+12. Next update the cb-core Ingress by modifying the ***set-ingress-host.yml*** file in the ***kustomize*** directory to use the production `Issuer`: `cert-manager.io/issuer: "letsencrypt-production"`
 13. Apply the changes with `kubectl`:
     ```
     kubectl apply -k ./kustomize

@@ -5,10 +5,10 @@ The dynamic provisioning of Managed Master by Operations Center is an important 
 ## Provisioning Masters
 There are two types of Managed Masters for CloudBees Core:
 
-1. Regular Managed Masters - provides more customization at creation time and the use of a more sophisticated RBAC model to include folder level permissions
-2. Team Masters - provides a new UX and simplified RBAC, also supports provisioning via a CLI
+1. Regular Managed Masters - provides more customization at creation time and the use of a more sophisticated RBAC model to include folder level permissions.
+2. Team Masters - provides a new UX and simplified RBAC, also supports provisioning via a CLI.
 
-Both types of Masters can be provisioned through the CloudBees Core Operations Center UI and programmatically via Groovy scripts or a CLI.
+Both types of Masters can be provisioned through the CloudBees Core Operations Center UI and programmatically via Groovy scripts.
 
 We will start with provisioning a regular Managed Master via the UI:
 
