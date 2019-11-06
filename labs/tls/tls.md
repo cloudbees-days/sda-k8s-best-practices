@@ -4,7 +4,7 @@
 
 ## Install cert-manager
 
-1. In the Cloud Shell code editor navigate to the ***oc-casc*** directory, create a new directory named ***cert-manager*** and in that directory create a new file named ***cert-manager-namespace.yml** with the following contents:
+1. In the Cloud Shell code editor navigate to the ***oc-casc*** directory, create a new directory named ***cert-manager*** and in that directory create a new file named ***cert-manager-namespace.yml*** with the following contents:
    ```yaml
    apiVersion: v1
    kind: Namespace
