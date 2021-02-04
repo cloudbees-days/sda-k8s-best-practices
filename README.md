@@ -1,6 +1,6 @@
-# Kubernetes Best practices for CloudBees Core Workshop
+# Kubernetes Best practices for CloudBees CI Workshop
 
-This workshop will provide a holistic set of best practices for running CloudBees Core on Kubernetes.
+This workshop will provide a holistic set of best practices for running CloudBees CI on Kubernetes.
 
 This repository contains instructions and learning materials for the workshop that is designed to teach the following key concepts:
 
@@ -10,7 +10,7 @@ This repository contains instructions and learning materials for the workshop th
     * Performance
     * Resource Management
     * Configuration Management
-  * How specific features of CloudBees Core on Kubernetes will accelerate your CD
+  * How specific features of CloudBees CI on Kubernetes will accelerate your CD
     * Dynamic Master provisioning
     * Ephemeral and elastic Jenkins Kubernetes Agents
     * Master Configuration-as-Code with CloudBees' Configuration Bundles
@@ -44,13 +44,13 @@ Detailed setup instructions are available at [**Getting Started**](labs/getting-
 **The labs covered in this workshop are available at the following links:**
 
 * Lab 1: [Getting Started - Creating a GKE Cluster](labs/getting-started/getting-started.md)
-* Lab 2: [Installing CloudBees Core](labs/installing-core/installing-core.md)
-* Lab 3: [Securing CloudBees Core with HTTPS and TLS](labs/tls/tls.md)
+* Lab 2: [Installing CloudBees CI](labs/installing-core/installing-core.md)
+* Lab 3: [Securing CloudBees CI with HTTPS and TLS](labs/tls/tls.md)
 * Lab 4: [Pod Security Policies](labs/pod-security-policies/psp.md)
 * Lab 5: [Managed Master Provisioning and Configuration](labs/managed-masters/managed-masters.md)
 * Lab 6: [Securing Masters with Namespaces](labs/master-namespaces/master-namespaces.md)
 * Lab 7: [Hibernating Masters and Affinity](labs/hibernating-masters/hibernating-masters.md)
-* Lab 8: [Configuration as Code for Core](labs/casc-core/casc-core.md)
+* Lab 8: [Configuration as Code for CloudBees CI](labs/casc-core/casc-core.md)
 * Lab 9: [Resource Limits and Quotas](labs/limits-quotas/limits-quotas.md)
 * Lab 10: [Kubernetes Agents](labs/k8s-agents/k8s-agents.md)
 * Lab 11: [Pipeline Best Practices](labs/pipeline-best-practices/pipeline-best-practices.md)
