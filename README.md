@@ -1,8 +1,8 @@
-# Kubernetes Best practices for CloudBees CI Workshop
+# Best practices for Software Delivery Automation on Kubernetes
 
-This workshop will provide a holistic set of best practices for running CloudBees CI on Kubernetes.
+This workshop will provide a holistic set of best practices for running CloudBees SDA on Kubernetes (SDA on K8s).
 
-This repository contains instructions and learning materials for the workshop that is designed to teach the following key concepts:
+This repository contains instructions and learning materials for a workshop that is designed to teach the following key concepts:
 
   * General best practices for CI/CD on Kubernetes to include:
     * Scalability
@@ -10,10 +10,10 @@ This repository contains instructions and learning materials for the workshop th
     * Performance
     * Resource Management
     * Configuration Management
-  * How specific features of CloudBees CI on Kubernetes will accelerate your CD
-    * Dynamic Master provisioning
+  * How specific features of CloudBees SDA on Kubernetes will accelerate your CD
+    * Dynamic Jenksin Controller provisioning
     * Ephemeral and elastic Jenkins Kubernetes Agents
-    * Master Configuration-as-Code with CloudBees' Configuration Bundles
+    * Jenkins Controller Configuration-as-Code with CloudBees' Configuration Bundles
   
 To get started goto the [**Getting Started**](labs/getting-started/getting-started.md).
 
